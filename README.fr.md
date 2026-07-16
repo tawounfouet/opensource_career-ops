@@ -131,7 +131,7 @@ claude   # ouvrez votre CLI d'IA — il vous guidera au premier lancement
 
 > **Le système est conçu pour être personnalisé par Claude lui-même.** Modes, archétypes, pondérations des scores, scripts de négociation — demandez simplement à Claude de les modifier. Il lit les mêmes fichiers qu'il utilise, il sait donc exactement quoi modifier.
 
-Voir [docs/SETUP.md](docs/SETUP.md) (en anglais) pour le guide de configuration complet.
+Voir [docs/getting-started/setup.md](docs/getting-started/setup.md) (en anglais) pour le guide de configuration complet.
 
 ## Intégration de l'interface en ligne de commande Gemini
 
@@ -172,8 +172,8 @@ cp .env.example .env
 npm install
 
 # 3. Évaluez une description de poste
-node gemini-eval.mjs "We are looking for a Senior AI Engineer..."
-node gemini-eval.mjs --file ./jds/my-job.txt
+node scripts/js/gemini-eval.mjs "We are looking for a Senior AI Engineer..."
+node scripts/js/gemini-eval.mjs --file ./jds/my-job.txt
 npm run gemini:eval -- "Texte de la description de poste ici"
 ```
 
@@ -237,10 +237,10 @@ Le scanner est livré avec **plus de 45 entreprises** prêtes à être analysée
 
 **Plateformes d'emploi scannées :** Ashby, Greenhouse, Lever, Wellfound, Workable, RemoteFront  
 
-Par défaut, `node scan.mjs` (alias `npm run scan`) fait confiance aux données renvoyées par les flux ATS. Certaines entreprises laissent des offres obsolètes actives sur leurs API publiques même après la fermeture du poste, ce qui peut polluer `pipeline.md`. Passez l'option `--verify` pour lancer Playwright après l'analyse de l'API afin de supprimer les offres expirées :
+Par défaut, `node scripts/js/scan.mjs` (alias `npm run scan`) fait confiance aux données renvoyées par les flux ATS. Certaines entreprises laissent des offres obsolètes actives sur leurs API publiques même après la fermeture du poste, ce qui peut polluer `pipeline.md`. Passez l'option `--verify` pour lancer Playwright après l'analyse de l'API afin de supprimer les offres expirées :
 
 ```bash
-node scan.mjs --verify          # découverte sans jeton + vérification de l'état actif via Playwright
+node scripts/js/scan.mjs --verify          # découverte sans jeton + vérification de l'état actif via Playwright
 ```
 
 La vérification est séquentielle et ne s'exécute que sur les nouvelles offres (après déduplication), afin de limiter l'utilisation des ressources.

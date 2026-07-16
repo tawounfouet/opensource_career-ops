@@ -37,7 +37,7 @@ The review process you'll experience here is documented end-to-end in [Agentic m
 2. Fork the repo
 3. Create a branch (`git checkout -b feature/my-feature`)
 4. Make your changes
-5. Test with a fresh clone (see [docs/SETUP.md](docs/SETUP.md))
+5. Test with a fresh clone (see [docs/getting-started/setup.md](docs/getting-started/setup.md))
 6. Commit and push
 7. Open a Pull Request referencing the issue
 
@@ -85,7 +85,7 @@ Rule of thumb before you build: **provider modules, languages, CLI support, mode
 - **PRs that scrape platforms prohibiting automated access** (LinkedIn, etc.). We actively reject these to respect third-party ToS.
 - **PRs that enable auto-submitting applications** without human review. career-ops is a decision-support tool, not a spam bot.
 - **PRs that add external API dependencies** without prior discussion in an issue.
-- **Feature PRs against bundled plugins** (`plugins/apify`, `plugins/gmail`, `plugins/notion`). Bundled plugins are stable *reference seeds* — to extend one, publish your own `career-ops-plugin-<id>` and we'll register it as the maintained successor that takes precedence once installed (see [docs/PLUGINS.md](docs/PLUGINS.md)). Bundled plugins only take security/compat fixes.
+- **Feature PRs against bundled plugins** (`plugins/apify`, `plugins/gmail`, `plugins/notion`). Bundled plugins are stable *reference seeds* — to extend one, publish your own `career-ops-plugin-<id>` and we'll register it as the maintained successor that takes precedence once installed (see [docs/guides/plugins.md](docs/guides/plugins.md)). Bundled plugins only take security/compat fixes.
 - **PRs that add centralized or hosted infrastructure to the core** (proxies, aggregation services, shared Workers). That's the separate opt-in service, not the open-core — bring it to the [direction discussion](https://github.com/santifer/career-ops/discussions/904) first.
 - **Integrations that send your data to a third-party service** — providers or sync features that require a third-party account or push your CV, pipeline, or notes out to an external service. career-ops is local-first and zero-keys: your job-search data stays on your machine. Reading *public* job-listing APIs locally is welcome (that's how the built-in providers work); routing your personal data through someone else's service is not.
 - **PRs that add third-party hosted entry-points or service badges to the README** — links or embeds that route users' resumes or job data through a service the project doesn't operate. The README stays to assets the project controls, and the official online experience is something we keep first-party (see [The Vision](https://github.com/santifer/career-ops/discussions/156)). Projects built on career-ops are welcome — share them in the [Discord](https://discord.gg/8pRpHETxa4) or Discussions, just not on the front page.
@@ -96,17 +96,17 @@ Rule of thumb before you build: **provider modules, languages, CLI support, mode
 ```bash
 # Scripts
 npm run doctor                # Setup validation
-node verify-pipeline.mjs     # Health check
-node cv-sync-check.mjs        # Config check
+node scripts/js/verify-pipeline.mjs     # Health check
+node scripts/js/cv-sync-check.mjs        # Config check
 
 # Dashboard
 npm run build:dashboard       # go build with platform-correct binary name
 npm run serve:dashboard       # launch the TUI against the repo root
 
 # Tests
-node test-all.mjs             # Full suite — run before pushing/opening a PR
-node test-all.mjs --quick     # Full suite, skipping the dashboard build
-node test-all.mjs --only providers/themuse   # Run just one provider's test(s)
+node scripts/js/test-all.mjs             # Full suite — run before pushing/opening a PR
+node scripts/js/test-all.mjs --quick     # Full suite, skipping the dashboard build
+node scripts/js/test-all.mjs --only providers/themuse   # Run just one provider's test(s)
 ```
 
 **Adding a test for a new scanner provider:** add one file at
@@ -117,7 +117,7 @@ no registration needed. Do not add a section to `test-all.mjs` for this.
 `tests/` files matching the given substring and skips every inline core
 section (syntax, scripts, dashboard, data contract, personal data, paths,
 etc.). A green `--only` run is **not** a green suite — always run the full
-`node test-all.mjs` before pushing.
+`node scripts/js/test-all.mjs` before pushing.
 
 ## Brand and Trademark
 
@@ -131,4 +131,4 @@ trademark policy regarding commercial naming and endorsement claims.
 
 - [Join the Discord](https://discord.gg/8pRpHETxa4) — fastest way to get answers and connect with other contributors
 - [Open an issue](https://github.com/santifer/career-ops/issues)
-- [Read the architecture docs](docs/ARCHITECTURE.md)
+- [Read the architecture docs](docs/architecture/README.md)

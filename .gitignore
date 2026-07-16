@@ -117,3 +117,11 @@ plan/
 
 # Web
 .career-ops-web/logo-cache/
+
+# Django backend local artifacts
+backend/.venv/
+backend/db.sqlite3
+backend/.pytest_cache/
+backend/**/*.pyc
+backend/**/__pycache__/
+backend/*.egg-info/

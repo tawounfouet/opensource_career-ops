@@ -58,7 +58,7 @@
 </p>
 
 <p align="center">
-  <sub>Also runs on any agent-skill-standard CLI. See <a href="docs/SUPPORTED_CLIS.md">Supported CLIs</a>.</sub><br>
+  <sub>Also runs on any agent-skill-standard CLI. See <a href="docs/guides/supported-clis.md">Supported CLIs</a>.</sub><br>
   <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
   <img src="https://img.shields.io/badge/OpenCode-111827?style=flat&logo=terminal&logoColor=white" alt="OpenCode">
   <img src="https://img.shields.io/badge/Antigravity_CLI-4285F4?style=flat&logo=google&logoColor=white" alt="Antigravity CLI">
@@ -183,7 +183,7 @@ claude   # or codex / opencode / qwen / agy / grok
 
 > **The system is designed to be customized by your AI coding CLI itself.** Modes, archetypes, scoring weights, negotiation scripts -- just ask it to change them. It reads the same files it uses, so it knows exactly what to edit.
 
-See [docs/SETUP.md](docs/SETUP.md) for the full setup guide, [docs/RUNNING_ON_A_BUDGET.md](docs/RUNNING_ON_A_BUDGET.md) for instructions on running career-ops cheaply using custom or local models, [docs/APPLY_AUTOFILL.md](docs/APPLY_AUTOFILL.md) for details on the ATS auto-fill flow, and [docs/FAQ.md](docs/FAQ.md) for answers to common setup questions.
+See [docs/getting-started/setup.md](docs/getting-started/setup.md) for the full setup guide, [docs/getting-started/budget.md](docs/getting-started/budget.md) for instructions on running career-ops cheaply using custom or local models, [docs/guides/apply-autofill.md](docs/guides/apply-autofill.md) for details on the ATS auto-fill flow, and [docs/guides/faq.md](docs/guides/faq.md) for answers to common setup questions.
 
 ## Antigravity CLI Integration
 
@@ -271,9 +271,9 @@ cp .env.example .env
 npm install
 
 # 3. Evaluate a job description
-node gemini-eval.mjs "We are looking for a Senior AI Engineer..."
-node gemini-eval.mjs --file ./jds/my-job.txt
-node agent-inbox.mjs add "..."   # queue a request for the next session
+node scripts/js/gemini-eval.mjs "We are looking for a Senior AI Engineer..."
+node scripts/js/gemini-eval.mjs --file ./jds/my-job.txt
+node scripts/js/agent-inbox.mjs add "..."   # queue a request for the next session
 npm run gemini:eval -- "JD text here"
 ```
 
@@ -339,12 +339,12 @@ The scanner comes with **45+ companies** ready to scan and **19 search queries**
 **Automation:** n8n, Zapier, Make.com
 **European:** Factorial, Attio, Tinybird, Clarity AI, Travelperk
 
-**Job boards searched:** 21 provider modules cover ATS APIs, board-wide feeds, XML/RSS feeds, markdown feeds, and local parsers. See [Supported job boards](docs/SUPPORTED_JOB_BOARDS.md) for the full table.
+**Job boards searched:** 21 provider modules cover ATS APIs, board-wide feeds, XML/RSS feeds, markdown feeds, and local parsers. See [Supported job boards](docs/guides/supported-job-boards.md) for the full table.
 
-By default `node scan.mjs` (a.k.a. `npm run scan`) trusts what each ATS feed returns. Some companies leave stale postings in their public API even after the role is closed, so those expired entries can leak into `pipeline.md`. Pass `--verify` to launch Playwright after the API pass and drop expired postings before they hit the pipeline:
+By default `node scripts/js/scan.mjs` (a.k.a. `npm run scan`) trusts what each ATS feed returns. Some companies leave stale postings in their public API even after the role is closed, so those expired entries can leak into `pipeline.md`. Pass `--verify` to launch Playwright after the API pass and drop expired postings before they hit the pipeline:
 
 ```bash
-node scan.mjs --verify          # zero-token discovery + Playwright liveness check
+node scripts/js/scan.mjs --verify          # zero-token discovery + Playwright liveness check
 ```
 
 The verification is sequential and only runs against new offers (after dedup), so the cost stays bounded.

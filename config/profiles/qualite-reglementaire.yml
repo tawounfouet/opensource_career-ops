@@ -1,0 +1,63 @@
+candidate:
+  full_name: Audrey KWEKEU
+  email: kwekeuaudrey@gmail.com
+  phone: +33 7 44 73 70 96
+  location: Marseille, France
+  linkedin: https://www.linkedin.com/in/audrey-kwekeu-252689222?fromQR=1
+  portfolio_url: ''
+  github: ''
+  twitter: ''
+  wechat: ''
+  photo: ''
+narrative:
+  headline: Ingénieure Qualité & Affaires Réglementaires
+  exit_story: >-
+    Audrey KWEKEU est une ingénieure spécialisée dans la qualité et les affaires réglementaires,
+    avec une expérience significative dans le secteur biomédical. Elle a contribué à la mise en
+    conformité de dispositifs médicaux et possède une solide formation technique en ingénierie
+    biomédicale.
+  superpowers:
+    - Expertise en réglementation et normes
+    - Compétences en gestion de projet
+    - Capacité d'adaptation rapide
+    - Rigueur et autonomie
+  objective: ''
+  proof_points: []
+languages:
+  - language: Français
+    level: C2
+    note: ''
+  - language: Anglais
+    level: B2
+    note: TOEIC 865/990
+interests:
+  - Écriture de poésie
+  - Course à pied
+  - Voyage
+  - Engagement dans des associations étudiantes
+  - Chant choral
+regulations:
+  - ISO 10993
+  - FDA
+  - ISO 13485
+  - MDSAP
+  - ISO 14971
+  - ISO 62366
+  - Règlement (UE) 2017/745
+  - AI Act
+  - ISO 62304
+  - Bonnes pratiques de fabrication (BPF)
+  - Règlement (UE) 2017/746
+location:
+  country: France
+  city: Marseille
+  timezone: ''
+  visa_status: ''
+compensation:
+  target_range: ''
+  currency: EUR
+  minimum: ''
+  location_flexibility: ''
+language:
+  output: fr
+spend_tier: standard

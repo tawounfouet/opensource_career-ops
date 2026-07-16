@@ -1,0 +1,51 @@
+candidate:
+  full_name: Audrey KWEKEU
+  email: audrey.kwekeuaudrey@gmail.com
+  phone: +33 7 44 73 70 96
+  location: Marseille, France
+  linkedin: linkedin.com/in/audrey-kwekeu-252689222
+narrative:
+  headline: Responsable Qualité, Affaires Réglementaires & Affaires Normatives
+  exit_story: Audrey KWEKEU est une experte en qualité et affaires réglementaires,
+    avec une solide expérience dans la mise en conformité des dispositifs médicaux.
+    Elle se distingue par sa capacité à gérer des projets complexes et à interagir
+    efficacement avec les autorités compétentes.
+  superpowers:
+  - Expertise en réglementation des dispositifs médicaux
+  - Gestion de projets transversaux
+  - Compétences en management d'équipe
+  - Connaissance approfondie des normes ISO
+  - Capacité d'analyse et résolution de problèmes
+languages:
+- language: Français
+  level: langue maternelle
+  note: ''
+- language: Anglais
+  level: B2
+  note: TOEIC 865/990, usage professionnel quotidien
+- language: Arabe
+  level: langue maternelle
+  note: (darija)
+interests:
+- course à pied
+- Chant choral (chorale classique)
+- écriture de poésie
+- voyage
+- engagement associatif étudiant
+regulations:
+- BPF/GMP
+- MDSAP
+- AI Act
+- ISO 13485
+- MDR 2017/745
+- IVDR 2017/746
+- ISO 62366
+- ISO 14971
+- IEC 62304
+- IEC 62443
+- ISO 62304
+- ISO 10993
+- FDA 21 CFR
+location:
+  country: France
+  city: Marseille

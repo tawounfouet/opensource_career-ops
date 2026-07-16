@@ -39,10 +39,12 @@ target_roles:
       fit: "adjacent"
 
 narrative:
-  # Your professional headline (1 line)
-  headline: "ML Engineer turned AI product builder"
+  # Your professional headline (1 line) — also used as CV objective/summary
+  headline: "Ingénieure Qualité & Affaires Réglementaires"
   # Your exit story — what makes you unique
   exit_story: "Built and sold my SaaS after 5 years. Now focused on applied AI at scale."
+  # CV objective (optional, overrides headline if set)
+  # objective: "Recherche active d'un poste en CDD ou CDI dans les secteurs biomédical, pharmaceutique ou des dispositifs médicaux."
   # Your top 3-5 superpowers
   superpowers:
     - "End-to-end ML pipelines"
@@ -83,7 +85,7 @@ language:
   output: en
   # modes_dir: modes/de  # optional: use DACH market vocabulary while still writing in English
 
-# Optional follow-up cadence preferences for `node scripts/js/followup-cadence.mjs`.
+# Optional follow-up cadence preferences for `node followup-cadence.mjs`.
 # CLI flags still win for one-off runs (for example `--applied-days 10`).
 # followup_cadence:
 #   applied_first_days: 7
@@ -112,6 +114,46 @@ cv:
   # templates/cv-template.html. You can also pick per-generation just by asking
   # (e.g. "use the modern template").
   # template: modern
+
+# ── Languages ────────────────────────────────────────────────────────────────
+#
+# Languages for the CV. Each entry maps to a CVData.languages entry.
+# level uses CECRL (A1-C2) or free text ("Langue maternelle").
+#
+languages:
+  - language: "Français"
+    level: "Langue maternelle"
+  - language: "Anglais"
+    level: "B2"
+    note: "TOEIC 865/990"
+
+# ── Interests ────────────────────────────────────────────────────────────────
+#
+# Centers of interest for the CV. Displayed in the "Centres d'intérêt" section.
+#
+interests:
+  - "Engagement dans des associations étudiantes"
+  - "Chant choral"
+  - "Écriture de poésie"
+  - "Course à pied"
+  - "Voyage"
+
+# ── Regulations & Standards ─────────────────────────────────────────────────
+#
+# Regulatory frameworks and standards you work with. Displayed in the CV
+# if relevant to the target role.
+#
+regulations:
+  - "Règlement (UE) 2017/745"
+  - "Règlement (UE) 2017/746"
+  - "Bonnes pratiques de fabrication (BPF)"
+  - "FDA"
+  - "MDSAP"
+  - "ISO 13485"
+  - "ISO 62304"
+  - "ISO 14971"
+  - "ISO 62366"
+  - "ISO 10993"
 
 # ── Culture Screen ───────────────────────────────────────────────────────────
 #

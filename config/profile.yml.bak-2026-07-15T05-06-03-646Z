@@ -1,0 +1,64 @@
+candidate:
+  full_name: ''
+  email: ''
+  phone: ''
+  wechat: ''
+  location: ''
+  linkedin: ''
+  portfolio_url: ''
+  github: ''
+  twitter: ''
+  photo: ''
+target_roles:
+  primary:
+    - Senior AI Engineer
+    - Staff ML Engineer
+  archetypes:
+    - name: AI/ML Engineer
+      level: Senior/Staff
+      fit: primary
+    - name: AI Product Manager
+      level: Senior
+      fit: secondary
+    - name: Solutions Architect
+      level: Mid-Senior
+      fit: adjacent
+narrative:
+  headline: ''
+  exit_story: ''
+  superpowers: []
+  proof_points: []
+  objective: ''
+compensation:
+  target_range: ''
+  currency: EUR
+  minimum: ''
+  location_flexibility: ''
+location:
+  country: ''
+  city: ''
+  timezone: ''
+  visa_status: ''
+language:
+  output: fr
+spend_tier: standard
+cv:
+  output_format: html
+languages: []
+interests: []
+regulations: []
+cover_letter:
+  notice_period_days: 30
+  primary_domain: your current domain
+  language_learning:
+    - language: Spanish
+      current_level: B1
+      target_level: B2
+      target_date: end of 2026
+      sentence: Estoy aprendiendo español y espero alcanzar el nivel B2 a finales de 2026.
+      countries:
+        - Spain
+        - Mexico
+        - Argentina
+        - Colombia
+        - Chile

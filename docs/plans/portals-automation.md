@@ -3,6 +3,8 @@
 **Date :** 2026-07-16  
 **Statut :** Analyse + propositions
 
+> **Voir aussi :** [Approche Hybride](portals-automation-hybrid.md) — combine les 4 approches en un pipeline unifie.
+
 ---
 
 ## Etat des lieux

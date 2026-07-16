@@ -138,3 +138,5 @@ Quatre approches analysees :
 - **B — OpenCode Skill** : instructions agent pour decouverte Playwright
 - **C — API REST** : endpoint `/api/portals/discover`
 - **D — Job Board Scraper** : scraping APEC/Indeed
+
+**Voir aussi :** [Approche Hybride](../plans/portals-automation-hybrid.md) — combine A+B+C+D en un pipeline unifie a 5 couches.

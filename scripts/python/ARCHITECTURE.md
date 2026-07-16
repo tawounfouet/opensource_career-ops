@@ -24,6 +24,270 @@ scripts/python/
 └── pyproject.toml                  Python project config
 ```
 
+---
+
+## Diagram 1 — System Overview: Package Interactions
+
+```
+                          +-------------------------+
+                          |        plugins/         |
+                          |  +-------+------+-----+ |
+                          |  | Gmail |Notion|Apify| |
+                          |  +---+---+--+---+--+--+ |
+                          |      | hooks |     |    |
+                          +------+-------+-----+----+
+                                 |       |     |
+       +-------------------------+-------+-----+--------------------------+
+       |                         |       |     |                          |
+       v                         v       v     v                          v
++--------------+  +----------+  +-----------+  +---------------------------+
+|     User     |  | scanner/ |  |  reply/   |  |          admin/           |
+|  +--------+  |  |          |  |           |  |  +---------------------+  |
+|  | cv.md  |  |  | scan     |  | reply     |  |  | doctor              |  |
+|  +--------+  |  | ats-full |  | watch     |  |  | update_system       |  |
+|  +--------+  |  | liveness |  | paste     |  |  | cv_sync_check       |  |
+|  |profile |  |  | classify |  | reply     |  |  | validate_portals    |  |
+|  |.yml    |  |  +----+-----+  | matcher   |  |  | analyze_patterns    |  |
+|  +--------+  |       |        +-----+-----+  |  | upskill             |  |
++------+-------+       |              |        |  | stats               |  |
+       |               v              |        |  | manifesto           |  |
+       |         +-----------+        |        |  +---------------------+  |
+       |         | pipeline  |        |        +---------------------------+
+       |         | .md       |        |
+       |         +-----+-----+        |
+       |               |              |
+       v               v              v
++--------------+  +---------------------------------------------------+
+| evaluation/  |  |                    tracker/                       |
+|              |  |  +----------+------------+---------------------+  |
+| openai       |  |  | merge    | set        | verify              |  |
+| gemini       |  |  | tracker  | status     | pipeline            |  |
+| ollama       |  |  +----------+------------+---------------------+  |
+| tailor       |  |  +----------+------------+---------------------+  |
+| jd-skill-gap |  |  | dedup    | normalize  | reconcile           |  |
+| eval-golden  |  |  +----------+------------+---------------------+  |
+|              |  |  +----------+------------+---------------------+  |
++------+-------+  |  | find     | reposts    | invite-match        |  |
+       |          |  +----------+------------+---------------------+  |
+       v          |  +----------+------------+---------------------+  |
++--------------+  |  | reserve  | followup   | process-quality     |  |
+|    cv/       |  |  | report   | cadence    | add-entry           |  |
+|              |  |  +----------+------------+---------------------+  |
+| generate_pdf |  +---------------------------------------------------+
+| build_html   |                    |
+| build_latex  |                    v
+| cover-letter |            +---------------+
+| verify-facts |            | applications  |
+| templates    |            | .md           |
++------+-------+            +------+--------+
+       |                           |
+       v                           v
++--------------+           +---------------+
+| output/*.pdf |           | data/         |
++--------------+           | follow-ups.md |
+                           +---------------+
+
++--------------+     +---------------+      +---------------+
+| interview/   |     |    other/     |      |   salary/     |
+| match-star   +---->| openrouter    |      | salary-gap    |
++------+-------+     | assessment    |      +-------+-------+
+       |             | funnel        |              |
+       v             | prepare-app   |              v
++--------------+     | archive       |      +---------------+
+| story-bank   |     | img-to-pdf    |      | salary-obs    |
+| .md          |     | fingerprint   |      | .tsv          |
++--------------+     +---------------+      +---------------+
+```
+
+**Key interactions:**
+- `scanner/` writes `pipeline.md`, feeds `tracker/`
+- `evaluation/` reads `cv.md` + `profile.yml`, writes `reports/`, feeds `cv/` + `tracker/`
+- `tracker/` is the central hub — merge, dedup, verify, status management
+- `plugins/` injects hooks at scanner (provider), ingest (Gmail), export (Notion) points
+- `reply/` ingests employer emails, feeds into `tracker/` via `set_status`
+
+---
+
+## Diagram 2 — Core Job Search Workflow: End-to-End Data Flow
+
+```
+  config/         +---+      portals.yml
+  profile.yml ----+   |
+                  |   |      +-------------------+
+  cv.md ----------+   +----->|                   |
+                              |     scanner/      |
+  article ------------------->|                   |
+  digest.md                   |  scan.py          |
+                              |  scan_ats_full.py +---> data/scan-history.tsv
+  portals.yml --------------->|  check_liveness   |     (dedup log)
+                              |                   |
+                              +--------+----------+
+                                       |
+                                       | new offers found
+                                       v
+                              +-------------------+
+                              |                   |
+                              |   data/           |
+                              |   pipeline.md     |
+                              |                   |
+                              +--------+----------+
+                                       |
+                              +--------+----------+
+                              |                   |
+                              |  evaluation/      |
+                              |                   |
+                              |  openai_eval.py   |
+                              |  gemini_eval.py   +---> reports/###
+                              |  ollama_eval.py   |     -company-date.md
+                              |  eval_golden.py   |     (Blocks A-F + G)
+                              |  jd_skill_gap.py  |
+                              +--------+----------+
+                                       |
+                        +--------------+--------------+
+                        |                             |
+                        v                             v
+               +-----------------+           +-----------------+
+               |                 |           |                 |
+               |     cv/         |           |    tracker/     |
+               |                 |           |                 |
+               |  generate_pdf   |           |  merge_tracker  |
+               |  build_html    +--+         |  set_status     |
+               |  verify_facts   | |         |  verify_pipeline|
+               |                 | |         +--------+--------+
+               +-----------------+ |                  |
+                        |          |                  v
+                        v          |         +-----------------+
+               +-----------------+ |         |  data/          |
+               | output/         | |         |  applications   |
+               | cv-*-*.pdf      | |         |  .md            |
+               +-----------------+ |         +-----------------+
+                                   |
+                                   v
+                          +-----------------+
+                          |  interview/     |
+                          |  match_star     |
+                          +--------+--------+
+                                   |
+                                   v
+                          +-----------------+
+                          | interview-prep/ |
+                          | story-bank.md   |
+                          | {co}-{role}.md  |
+                          +-----------------+
+
+  Side channels:
+  +------------------+          +------------------+
+  | reply_watch.py   +--------->| set_status.py    |
+  | paste_reply.py   |  email   | (status update)  |
+  +------------------+  digest  +------------------+
+```
+
+**Walkthrough:**
+1. **Discover** — `scanner/` reads `portals.yml`, hits ATS APIs, filters by title/location/salary, writes new URLs to `pipeline.md`
+2. **Evaluate** — `evaluation/` reads each JD from `pipeline.md`, scores against candidate profile, writes `reports/###-company-date.md`
+3. **Tailor** — `cv/` reads the evaluation report + `cv.md`, generates a tailored PDF → `output/`
+4. **Track** — `tracker/merge_tracker` writes the evaluation to `applications.md`; `set_status` updates as pipeline progresses
+5. **Reply** — `reply_watch` classifies employer emails, suggests `set_status` updates
+
+---
+
+## Diagram 3 — CLI Invocation Flow
+
+```
+  User input
+      |
+      |  npm run scan
+      |  npm run doctor --json
+      |  python -m scripts.python.scanner scan
+      |  python -m scripts.python.tracker merge
+      v
++---------------------+
+|     package.json    |  npm scripts (42 Python, 2 JS fallback)
+|  "scan": "python    |
+|   -m scripts.python |
+|   .scanner.scan"    |
++----------+----------+
+           |
+           | exec: python -m scripts.python.<pkg>.<module> [args...]
+           v
++---------------------+
+|  __main__.py        |  package dispatcher
+|                     |
+|  COMMANDS = {       |
+|    "scan": "...     |
+|    "ats-full": "..."|
+|  }                  |
+|                     |
+|  cmd = sys.argv[1]  |
+|  mod = __import__() |
+|  mod.main(argv[2:]) |
++----------+----------+
+           |
+           | import + call main()
+           v
++---------------------+
+|  module.py          |  CLI module
+|                     |
+|  def main(argv):    |
+|    parser =         |
+|     argparse.Arg... |
+|    args = parser    |
+|     .parse_args()   |
+|    # business logic |
+|    return exit_code |
++----------+----------+
+           |
+           | read / write
+           v
++---------------------+
+|  data files         |
+|  applications.md    |
+|  pipeline.md        |
+|  reports/*.md       |
+|  scan-history.tsv   |
++---------------------+
+```
+
+**Key paths:**
+- **package level:** `python -m scripts.python.scanner` → `__main__.py` dispatches to default module
+- **module level:** `python -m scripts.python.scanner.scan` → direct module invocation
+- **npm level:** `npm run scan` → `package.json` "scan" script → module invocation
+
+---
+
+## Diagram 4 — Data Stores: Read/Write Matrix
+
+```
+                      scanner  eval   cv     tracker  reply   admin   other   plugins
+                      -------  ----   --     -------  -----   -----   -----   -------
+cv.md ................. R ....  R .... RW .... . R .... . .... . R .... . .... .
+config/profile.yml .... R ....  R .... R  .... . R .... . .... . R .... . .... .
+article-digest.md ..... R ....  R .... R  .... . R .... . .... . R .... . .... .
+portals.yml ........... RW ...  . .... .  .... . . .... . .... . R .... . .... .
+pipeline.md ........... RW ...  R .... .  .... . W .... . .... . . .... . .... .
+scan-history.tsv ...... RW ...  . .... .  .... . R .... . .... . . .... . .... .
+reports/*.md .......... . ....  RW ... R  .... . R .... . .... . R .... . .... .
+applications.md ....... . ....  . .... .  .... . RW ... . RW .. . R .... . .... .
+follow-ups.md ......... . ....  . .... .  .... . RW ... . . .... . . .... . .... .
+salary-observations.tsv. . ....  . .... .  .... . . .... . . .... . . .... . .... .
+assessments.tsv ....... . ....  . .... .  .... . . .... . . .... . RW ... . .... .
+story-bank.md ......... . ....  . .... .  .... . R .... . . .... . . .... . R ....
+output/*.pdf .......... . ....  . .... .  W .... . . .... . . .... . . .... . .
+scan-runs.tsv ......... . W .... . .... .  .... . . .... . . .... . . .... . .
+reply-candidates.json . . ....  . .... .  .... . . .... . RW ... . . .... . .
+
+R = read, W = write, . = no access
+```
+
+**Notes:**
+- `scanner/` is the only writer of `pipeline.md` and `scan-history.tsv`
+- `evaluation/` is the only writer of `reports/`
+- `tracker/` is the only writer of `applications.md`
+- `cv/` reads from `cv.md`, `profile.yml`, `article-digest.md` — validates all claims via `verify_facts`
+- `plugins/` reads `story-bank.md` for Gmail-based interview matching (if enabled)
+
+---
+
 ## Design Principles
 
 ### 1. One-to-one JS → Python parity
@@ -45,23 +309,7 @@ No string concatenation for paths. `Path(__file__).resolve().parents[N]` for pro
 ### 5. Argument parsing via `argparse`
 Every CLI module uses `argparse` with identical flags to the JS originals.
 
-## Data Flow
-
-```
-portals.yml ──► scanner/ ──► data/scan-history.tsv
-                                  │
-                                  ▼
-                          data/pipeline.md
-                                  │
-                                  ▼
-                    evaluation/ ──► reports/*.md
-                          │
-                          ▼
-                    cv/ ──► output/*.pdf
-                          │
-                          ▼
-                    tracker/ ──► data/applications.md
-```
+---
 
 ## Cross-cutting Concerns
 
@@ -72,6 +320,8 @@ portals.yml ──► scanner/ ──► data/scan-history.tsv
 | Config loading | `config/profile.yml`, `portals.yml` via `yaml.safe_load` |
 | Secrets | `dotenv` in `plugins/engine.py`, never in source |
 | Path resolution | `Path(__file__).resolve().parents[...]` |
+
+---
 
 ## Key Dependencies
 
@@ -87,12 +337,16 @@ dependencies = [
 ]
 ```
 
+---
+
 ## Test Architecture
 
 - `pytest` with `tmp_path` fixtures for isolated file I/O
 - No `__init__.py` in `tests/` (standard pytest auto-discovery)
 - 28 test files, 237 tests, 12 packages covered
 - CI: GitHub Actions runs `python -m pytest scripts/python/tests -q`
+
+---
 
 ## Related Documentation
 

@@ -2,6 +2,55 @@
 
 Python test suite for career-ops scripts.
 
+## Test Architecture
+
+```
+  +---------------------------------------------------------------+
+  |                    scripts/python/tests/                      |
+  |                     28 test files                              |
+  |                                                               |
+  |  +------------------+  +------------------+  +---------------+ |
+  |  | Foundations      |  | Tracker Core     |  | Scanner       | |
+  |  | test_foundations |  | test_merge_      |  | test_scanner_ | |
+  |  | imports, paths   |  | dedup_verify     |  | liveness_     | |
+  |  | constants        |  | test_set_status  |  | invite        | |
+  |  +------------------+  | test_followup_*  |  +---------------+ |
+  |                        | test_detect_     |                    |
+  |  +------------------+  | reposts          |  +---------------+ |
+  |  | CV & Eval        |  | test_tracker_    |  | Pipeline      | |
+  |  | test_cv_rendering|  | cli_ports        |  | test_browser_ | |
+  |  | test_evaluation  |  +------------------+  | extract       | |
+  |  +------------------+                        | test_liveness_| |
+  |                                              | pipeline      | |
+  |  +------------------+  +------------------+  | test_funnel_  | |
+  |  | Plugins          |  | Admin            |  | velocity      | |
+  |  | test_plugins     |  | test_admin_stats |  +---------------+ |
+  |  +------------------+  | test_admin_      |                    |
+  |                        | upskill          |  +---------------+ |
+  |  +------------------+  | test_admin_      |  | Misc          | |
+  |  | Reply            |  | validators       |  | test_salary_  | |
+  |  | test_reply_watch |  | test_admin_      |  | gap           | |
+  |  | test_reply_and_  |  | export_misc      |  | test_img_to_  | |
+  |  | assessment       |  | test_update_     |  | pdf           | |
+  |  +------------------+  | system_apply     |  | test_match_   | |
+  |                        +------------------+  | star          | |
+  |  +------------------+                        | test_prepare_ | |
+  |  | Skill Gap        |                        | application   | |
+  |  | test_jd_skill_   |                        | test_agent_   | |
+  |  | gap_application_ |                        | inbox_reconcile| |
+  |  | answers          |                        +---------------+ |
+  |  +------------------+                                           |
+  +---------------------------------------------------------------+
+                                   |
+                                   v
+                          +------------------+
+                          | 237 tests        |
+                          | ~0.7s runtime    |
+                          | pytest + tmp_path|
+                          | CI: GitHub Actions|
+                          +------------------+
+```
+
 ## Running Tests
 
 ```bash

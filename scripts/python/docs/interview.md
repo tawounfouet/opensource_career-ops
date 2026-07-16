@@ -2,6 +2,46 @@
 
 Interview preparation tools.
 
+## STAR Matching Flow
+
+```
+  +------------------+     +------------------+
+  | Behavioral Qs    |     | interview-prep/  |
+  | from JD /        |     | story-bank.md    |
+  | interviewer      |     | (STAR+R stories) |
+  +--------+---------+     +--------+---------+
+           |                        |
+           +-----------+------------+
+                       |
+                       v
+              +------------------+
+              | match_star.py    |
+              |                  |
+              | fuzzy match:     |
+              | question -> story|
+              |                  |
+              | best-fit story   |
+              | for each question|
+              +--------+---------+
+                       |
+                       v
+              +------------------+
+              | Matched Output   |
+              |                  |
+              | Q: "Tell me about|
+              | a time you..."   |
+              |                  |
+              | Story: "At Acme, |
+              | I led X project" |
+              +------------------+
+
+  Optional: company-specific prep
+  +------------------+
+  | interview-prep/  |
+  | {co}-{role}.md   |
+  +------------------+
+```
+
 ## Modules
 
 ### `match_star.py`

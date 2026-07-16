@@ -2,6 +2,56 @@
 
 Zero-token portal scanner for career-ops. Discovers job postings from company career pages, Greenhouse/Lever/Ashby APIs, and full ATS reverse discovery.
 
+## Discovery Pipeline
+
+```
+  +------------------+
+  |   portals.yml    |
+  | +--------------+ |
+  | | companies    | |     +---------------------------+
+  | | job_boards   | |     |     4-Layer Strategy      |
+  | | search_queries| |     |                           |
+  | +------+-------+ |     | L0: Local parser (SSR)     |
+  +--------+---------+     | L1: Playwright (careers_url)|
+           |               | L2: ATS API (Greenhouse/    |
+           v               |     Lever/Ashby/Workday)    |
+  +------------------+     | L3: WebSearch (site:)      |
+  |   scanner/scan.py |     +---------------------------+
+  |                  |
+  | 1. Fetch listings|
+  | 2. Apply filters |
+  |    - title_filter|
+  |    - location    |
+  |    - salary      |
+  | 3. Dedup against |
+  |    scan-history  |
+  +--------+---------+
+           |
+     +-----+------+
+     |            |
+     v            v
++---------+  +----------+
+| pipeline|  | scan-    |
+| .md     |  | history  |
+| (new    |  | .tsv     |
+| offers) |  | (dedup   |
++---------+  | log)     |
+             +----------+
+
+  +-----------------------+
+  | check_liveness.py     |
+  | Playwright or HTTP    |
+  | verify URL is active  |
+  +----------+------------+
+             |
+             v
+  +-----------------------+
+  | classify_tier.py      |
+  | Seniority tier        |
+  | for scoring           |
+  +-----------------------+
+```
+
 ## Modules
 
 ### `scan.py`

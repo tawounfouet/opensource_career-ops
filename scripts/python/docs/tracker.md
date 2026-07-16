@@ -2,6 +2,61 @@
 
 Pipeline tracking utilities. Manage `data/applications.md`, handle batch merges, status updates, deduplication, and report-number reservation.
 
+## Status Lifecycle
+
+```
+  +-----------+     +----------+     +------------+
+  | Evaluated +---->| Applied  +---->| Responded  |
+  +-----+-----+     +----+-----+     +-----+------+
+        |                 |                 |
+        v                 |                 v
+  +-----------+           |          +------------+
+  | Discarded |           +--------->| Interview  |
+  | SKIP      |                      +-----+------+
+  +-----------+                            |
+                                     +-----+------+
+                                     | Offer       |
+                                     +-----+------+
+                                           |
+                                     +-----+------+
+                                     | Rejected    |
+                                     +------------+
+```
+
+## Merge Pipeline
+
+```
+  +---------------------------+
+  | batch/tracker-additions/  |
+  | 042-acme.tsv              |
+  | 043-beta.tsv              |
+  +------------+--------------+
+               |
+               v
+  +---------------------------+     +---------------------------+
+  | merge_tracker.py          |     | data/applications.md      |
+  |                           |     |                           |
+  | 1. Read TSV additions     +---->| # | Date | Company | ...  |
+  | 2. Column swap (status    |     |---|---|---|---|           |
+  |    before score)          |     | 1 | ... | Acme   | ...    |
+  | 3. Link normalization     |     | 2 | ... | Beta   | ...    |
+  | 4. Via field parsing      |     +---------------------------+
+  | 5. Atomic write           |
+  +---------------------------+
+
+  Maintenance:
+  +------------------+  +-------------------+  +-------------------+
+  | dedup_tracker.py +->| normalize_status  +->| reconcile_pipeline|
+  | remove duplicates |  | canonical states  |  | move to Processed |
+  +------------------+  +-------------------+  +-------------------+
+
+  Verification:
+  +------------------+     +------------------+
+  | verify_pipeline  +---->| reserve_report   |
+  | health check     |     | num (parallel)   |
+  +------------------+     +------------------+
+```
+
 ## Core Modules
 
 ### `merge_tracker.py`

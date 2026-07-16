@@ -2,6 +2,55 @@
 
 CV generation pipeline — HTML, LaTeX, PDF, and cover letters. Reads from `cv.md`, `config/profile.yml`, `article-digest.md`.
 
+## Generation Pipeline
+
+```
+  +------------------+     +------------------+     +------------------+
+  | cv.md            |     | profile.yml      |     | article-digest   |
+  | (canonical CV)   |     | (candidate info) |     | .md (proof pts)  |
+  +--------+---------+     +--------+---------+     +--------+---------+
+           |                        |                        |
+           +------------------------+------------------------+
+                                    |
+                                    v
+  +----------------------------------------------------------------+
+  |                        cv/ package                             |
+  |                                                                |
+  |  +------------------+    +------------------+                   |
+  |  | templates.py     |    | verify_facts.py  |                   |
+  |  | resolve template +--->| validate claims  |                   |
+  |  +------------------+    | against sources  |                   |
+  |                          +------------------+                   |
+  |                                                                |
+  |  HTML Path:                         LaTeX Path (legacy):        |
+  |  +------------------+               +------------------+        |
+  |  | build_html.py    |               | build_latex.py   |        |
+  |  | cv.json -> HTML  |               | cv.json -> .tex  |        |
+  |  +--------+---------+               +--------+---------+        |
+  |           |                                  |                  |
+  |           v                                  v                  |
+  |  +------------------+               +------------------+        |
+  |  | generate_pdf.py  |               | generate_latex   |        |
+  |  | HTML -> PDF      |               | .tex -> PDF      |        |
+  |  | (Playwright)     |               | (pdflatex)       |        |
+  |  +--------+---------+               +--------+---------+        |
+  |           |                                  |                  |
+  +-----------+----------------------------------+------------------+
+              |                                  |
+              v                                  v
+  +------------------+               +------------------+
+  | output/          |               | output/          |
+  | cv-*.pdf         |               | cv-*.pdf         |
+  +------------------+               +------------------+
+
+  Cover Letter Path:
+  +------------------+
+  | generate_cover   |
+  | _letter.py       +---> output/cover-*.pdf
+  | --payload        |
+  +------------------+
+```
+
 ## Core Modules
 
 ### `generate_pdf.py`

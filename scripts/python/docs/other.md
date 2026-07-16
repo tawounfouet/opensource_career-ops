@@ -2,6 +2,40 @@
 
 Miscellaneous utilities that don't fit into the main packages.
 
+## Utility Map
+
+```
+  +---------------------------------------------------------------+
+  |                        other/ package                         |
+  |                                                               |
+  |  +--------------------+    +--------------------+              |
+  |  | openrouter_runner  |    | prepare_application|              |
+  |  | Free-model CLI:    |    | ATS form filler    |              |
+  |  | scan/eval/pipeline |    | (no submit)        |              |
+  |  | apply/models       |    +--------------------+              |
+  |  +--------------------+                                       |
+  |                                                               |
+  |  +--------------------+    +--------------------+              |
+  |  | assessment_log     |    | funnel_velocity    |              |
+  |  | skills test events |    | stage velocity     |              |
+  |  | data/assessments   |    | calibration        |              |
+  |  | .tsv               |    +--------------------+              |
+  |  +--------------------+                                       |
+  |                                                               |
+  |  +--------------------+    +--------------------+              |
+  |  | archive_posting    |    | img_to_pdf         |              |
+  |  | job metadata       |    | image -> PDF       |              |
+  |  | dry-run filenames  |    | single page        |              |
+  |  +--------------------+    +--------------------+              |
+  |                                                               |
+  |  +--------------------+    +--------------------+              |
+  |  | application_answers|    | fingerprint_core   |              |
+  |  | upsert form answers|    | dedup across       |              |
+  |  | into report        |    | rescrapes          |              |
+  |  +--------------------+    +--------------------+              |
+  +---------------------------------------------------------------+
+```
+
 ## Modules
 
 ### `openrouter_runner.py`

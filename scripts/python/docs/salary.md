@@ -2,6 +2,36 @@
 
 Compensation gap analysis.
 
+## Analysis Flow
+
+```
+  +------------------+     +------------------+     +------------------+
+  | config/          |     | reports/*.md     |     | data/            |
+  | profile.yml      |     | Block E:         |     | salary-          |
+  | desired range    |     | advertised_comp  |     | observations.tsv |
+  +--------+---------+     +--------+---------+     +--------+---------+
+           |                        |                        |
+           +------------------------+------------------------+
+                                    |
+                                    v
+                          +------------------+
+                          | salary_gap.py    |
+                          |                  |
+                          | gap = desired    |
+                          |     - advertised |
+                          |     - actual     |
+                          +--------+---------+
+                                   |
+                            +------+------+
+                            |             |
+                            v             v
+                     +-----------+  +-----------+
+                     | JSON      |  | --summary |
+                     | machine   |  | table +   |
+                     | readable  |  | data-qty  |
+                     +-----------+  +-----------+
+```
+
 ## Modules
 
 ### `salary_gap.py`

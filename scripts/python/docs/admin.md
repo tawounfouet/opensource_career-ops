@@ -2,6 +2,46 @@
 
 System administration, validation, and diagnostics.
 
+## Admin Toolkit Overview
+
+```
+  +----------------------------------------------------------+
+  |                     admin/ package                       |
+  |                                                          |
+  |  Onboarding & Health:                                    |
+  |  +--------------------+    +--------------------+         |
+  |  | doctor.py          |    | cv_sync_check.py   |         |
+  |  | setup validation   +--->| config consistency  |         |
+  |  | --json for CI      |    | cv.md + profile    |         |
+  |  +--------------------+    +--------------------+         |
+  |                                                          |
+  |  System Updates:                                         |
+  |  +--------------------+    +--------------------+         |
+  |  | update_system.py   |    | validate_paths.py  |         |
+  |  | check / apply /    |    | coverage check     |         |
+  |  | rollback / dismiss |    | SYSTEM/USER paths  |         |
+  |  +--------------------+    +--------------------+         |
+  |                                                          |
+  |  Validation:                                             |
+  |  +--------------------+    +--------------------+         |
+  |  | validate_portals   |    | verify_portals.py  |         |
+  |  | schema validation  |    | ATS slug check     |         |
+  |  +--------------------+    +--------------------+         |
+  |                                                          |
+  |  Analytics:                                              |
+  |  +--------------------+    +--------------------+         |
+  |  | analyze_patterns   |    | upskill.py         |         |
+  |  | ATS channel stats  |    | skill-gap map      |         |
+  |  | conversion rates   |    | from reports       |         |
+  |  +--------------------+    +--------------------+         |
+  |  +--------------------+                                  |
+  |  | stats.py           |                                  |
+  |  | lifetime pipeline  |                                  |
+  |  | ever-funnel        |                                  |
+  |  +--------------------+                                  |
+  +----------------------------------------------------------+
+```
+
 ## Core Modules
 
 ### `doctor.py`

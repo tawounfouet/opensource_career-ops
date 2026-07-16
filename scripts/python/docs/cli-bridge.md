@@ -2,6 +2,86 @@
 
 How Python scripts are invoked from the command line and npm.
 
+## Invocation Flow
+
+```
+  User
+   |
+   |  npm run scan -- --dry-run
+   |  python -m scripts.python.scanner scan --company Acme
+   |  python -m scripts.python.tracker merge
+   v
+  +---------------------+
+  | package.json        |
+  | "scan": "python -m  |
+  |  scripts.python     |
+  |  .scanner.scan"     |  42 Python scripts
+  +---------+-----------+
+            |
+            | OR direct: python -m scripts.python.<pkg>.<module>
+            v
+  +---------------------+
+  | __main__.py         |  Package dispatcher (all 12 packages)
+  |                     |
+  | COMMANDS = {        |
+  |   "scan": "...      |
+  |   "merge": "...     |
+  | }                   |
+  |                     |
+  | 1. Parse subcommand |
+  | 2. Lookup module    |
+  | 3. __import__()     |
+  | 4. main(argv[2:])   |
+  +---------+-----------+
+            |
+            v
+  +---------------------+
+  | module.py           |  CLI implementation
+  |                     |
+  | def main(argv):     |
+  |   parser = argparse |
+  |   args = parse_args |
+  |   # business logic  |
+  |   return exit_code  |
+  +---------+-----------+
+            |
+            v
+  +---------------------+
+  | data files          |
+  | applications.md     |
+  | pipeline.md         |
+  | reports/*.md        |
+  +---------------------+
+```
+
+## Three Invocation Styles
+
+```
+  Style 1: npm
+  npm run scan -- --dry-run
+       |
+       v
+  package.json "scan" script
+       |
+       v
+  python -m scripts.python.scanner.scan --dry-run
+
+  Style 2: package-level
+  python -m scripts.python.scanner scan --dry-run
+       |
+       v
+  scripts/python/scanner/__main__.py
+       |
+       v
+  COMMANDS["scan"] -> scanner.scan.main()
+
+  Style 3: module-level
+  python -m scripts.python.scanner.scan --dry-run
+       |
+       v
+  scripts/python/scanner/scan.py:main()
+```
+
 ## Entry Points
 
 ### `__main__.py` (package level)

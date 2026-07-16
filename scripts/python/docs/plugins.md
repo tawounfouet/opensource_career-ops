@@ -2,6 +2,54 @@
 
 Optional external integrations for career-ops. Gmail, Notion, Apify, and more.
 
+## Plugin Lifecycle
+
+```
+  +------------------+     +------------------+     +------------------+
+  | 1. DISCOVER      |     | 2. INSTALL       |     | 3. CONFIGURE     |
+  |                  |     |                  |     |                  |
+  | plugins.mjs list |     | plugins.mjs add  |     | .env keys        |
+  | plugins.mjs      +---->| <name>           +---->| (API tokens)     |
+  | available        |     |                  |     |                  |
+  +------------------+     +------------------+     +--------+---------+
+                                                           |
+                                                           v
+  +------------------+     +------------------+     +------------------+
+  | 6. EXECUTE       |     | 5. TRUST         |     | 4. ENABLE        |
+  |                  |     |                  |     |                  |
+  | run_hook()       |     | lock_gate()      |     | plugins.mjs      |
+  | called by engine +<----+ verify hash      +<----+ enable <id>      |
+  | at hook points   |     | tamper detection |     | --confirm        |
+  +------------------+     +------------------+     +------------------+
+```
+
+## Hook Execution Flow
+
+```
+  +------------------+
+  | engine.py        |
+  | load_plugins()   |
+  +--------+---------+
+           |
+           v
+  +------------------+     +------------------+
+  | Hooks available  |     | Hook points:     |
+  | +------+-------+ |     |                  |
+  | |Gmail |Notion| |     | provider (scan)   |
+  | +--+---+---+--+ |     | ingest (input)    |
+  |    |       |    |     | export (output)   |
+  +----+-------+----+     | apply (pre-submit)|
+       |       |          +------------------+
+       v       v
+  +------------------+
+  | run_hook(name,   |
+  | **context)       |
+  |                  |
+  | import_hook()    |
+  | redact_log()     |
+  +------------------+
+```
+
 ## Modules
 
 ### `cli.py`

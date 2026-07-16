@@ -2,6 +2,27 @@
 
 Dashboard and data export utilities.
 
+## Dashboard Build Flow
+
+```
+  +------------------+
+  | applications.md  |
+  | pipeline.md      |
+  | reports/*.md     |
+  +--------+---------+
+           |
+           v
+  +------------------+     +------------------+     +------------------+
+  | build_dashboard  |     | dashboard/       |     | TUI Dashboard    |
+  | .py              +---->| Go binary        +---->|                  |
+  | data aggregation |     | (build)          |     | interactive      |
+  +------------------+     +------------------+     | pipeline view    |
+                                                    +------------------+
+  Commands:
+    npm run build:dashboard    # Build Go binary
+    npm run serve:dashboard    # Launch TUI
+```
+
 ## Modules
 
 ### `build_dashboard.py`

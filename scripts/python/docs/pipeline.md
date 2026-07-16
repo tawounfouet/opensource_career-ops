@@ -2,6 +2,47 @@
 
 Pipeline management — browser extraction, agent inbox, liveness checking.
 
+## Processing Flow
+
+```
+  +------------------+
+  | pipeline.md      |
+  | (pending URLs)   |
+  +--------+---------+
+           |
+           v
+  +------------------+     +---------------------------+
+  | browser_extract  |     | Liveness Check            |
+  | .py              |     |                           |
+  |                  |     | +-----------------------+ |
+  | Playwright fetch +---->| | liveness_core.py      | |
+  | JD content from  |     | | shared logic          | |
+  | live URL         |     | | expired > Apply text  | |
+  +------------------+     | +-----------+-----------+ |
+                           |             |             |
+                           |      +------+------+      |
+                           |      |             |      |
+                           |      v             v      |
+                           | +----------+ +----------+ |
+                           | | liveness | | liveness | |
+                           | | _api.py  | | _browser | |
+                           | | HTTP     | | Playwright| |
+                           | +----------+ +----------+ |
+                           +---------------------------+
+                                        |
+                                        v
+                               +------------------+
+                               | URL status:      |
+                               | ACTIVE / EXPIRED |
+                               +------------------+
+
+  Cross-session:
+  +------------------+     +------------------+
+  | agent_inbox.py   |     | agent_inbox.py   |
+  | add "..."        +---->| list / resolve   |
+  +------------------+     +------------------+
+```
+
 ## Modules
 
 ### `browser_extract.py`

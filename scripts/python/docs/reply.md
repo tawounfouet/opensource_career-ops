@@ -2,6 +2,50 @@
 
 Classification and processing of employer replies.
 
+## Classification Pipeline
+
+```
+  +------------------+     +------------------+
+  | Gmail plugin     |     | Manual paste     |
+  | (auto-ingest)    |     | paste_reply.py   |
+  +--------+---------+     | --file email.txt |
+           |               +--------+---------+
+           |                        |
+           +-----------+------------+
+                       |
+                       v
+              +------------------+
+              | reply-candidates |
+              | .json            |
+              +--------+---------+
+                       |
+                       v
+              +------------------+     +------------------+
+              | reply_watch.py   |     | reply_matcher.py |
+              |                  |     |                  |
+              | classify email:  +---->| fuzzy-match to   |
+              | - interest       |     | tracker entries  |
+              | - rejection      |     |                  |
+              | - interview      |     +------------------+
+              | - other          |
+              +--------+---------+
+                       |
+                       v
+              +------------------+
+              | Review Digest    |
+              |                  |
+              | Suggested action:|
+              | set_status.py    |
+              | <#> <State>      |
+              +--------+---------+
+                       |
+                       v
+              +------------------+
+              | data/            |
+              | applications.md  |
+              +------------------+
+```
+
 ## Modules
 
 ### `reply_watch.py`

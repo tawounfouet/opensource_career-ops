@@ -2,6 +2,67 @@
 
 LLM-powered job offer evaluators. Score offers against candidate profile, generate tailored recommendations.
 
+## Evaluation Flow
+
+```
+  +------------------+     +------------------+
+  | Job Description  |     | Candidate Profile |
+  | (URL / file /    |     | cv.md            |
+  |  pasted text)    |     | profile.yml      |
+  +--------+---------+     +--------+---------+
+           |                        |
+           +-----------+------------+
+                       |
+                       v
+  +----------------------------------------------------+
+  |                  evaluation/                       |
+  |                                                    |
+  |  +------------------+  +------------------+         |
+  |  | jd_skill_gap.py  |  | eval_golden.py   |         |
+  |  | zero-LLM check   |  | model routing    |         |
+  |  | existing/gap/    |  | quality test     |         |
+  |  | supportedByResume|  +------------------+         |
+  |  +------------------+                               |
+  |                                                    |
+  |  +------------------+  +------------------+         |
+  |  | openai_eval.py   |  | gemini_eval.py   |         |
+  |  | OpenAI-compat    |  | Google Gemini    |         |
+  |  | (GPT, DeepSeek,  |  | (Free tier:      |         |
+  |  |  Together, Groq) |  |  15 RPM)         |         |
+  |  +------------------+  +------------------+         |
+  |                                                    |
+  |  +------------------+  +------------------+         |
+  |  | ollama_eval.py   |  | openai_tailor.py |         |
+  |  | Local models     |  | CV tailoring     |         |
+  |  | (no API key)     |  | per offer        |         |
+  |  +------------------+  +------------------+         |
+  |                                                    |
+  +---------------------------+------------------------+
+                              |
+                              v
+  +---------------------------------------------------+
+  |                  reports/###-company-date.md       |
+  |                                                   |
+  |  Score: X.X/5                                     |
+  |  Blocks A-F (evaluation) + G (legitimacy)         |
+  |  Recommendations: APPLY / SKIP / DISCARD          |
+  +---------------------------------------------------+
+```
+
+## Provider Routing
+
+```
+  +----------+     spend_tier in profile.yml
+  | economy  +----> Gemini Flash / GPT-3.5
+  +----------+
+  +----------+
+  | standard +----> GPT-4o-mini / Claude Haiku
+  +----------+
+  +----------+
+  | premium  +----> GPT-4o / Claude Sonnet
+  +----------+
+```
+
 ## Provider Modules
 
 ### `openai_eval.py`

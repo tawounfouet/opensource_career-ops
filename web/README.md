@@ -52,3 +52,12 @@ npm run build        # production build
 
 Set `CAREER_OPS_ROOT=/path/to/checkout` in `web/.env.local` to point the app at
 a different career-ops directory (useful for testing against sample data).
+
+Optional Django backend bridge:
+
+```bash
+CAREER_OPS_API_URL=http://localhost:8000
+```
+
+When this is set, supported API routes try Django first and fall back to the
+existing local Next.js implementation if Django is stopped or unavailable.

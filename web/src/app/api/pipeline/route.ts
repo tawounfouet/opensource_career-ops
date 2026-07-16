@@ -1,4 +1,5 @@
 import { pipelineSummary } from "@/lib/career-ops";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic"; // always read fresh local files
@@ -7,6 +8,9 @@ export const dynamic = "force-dynamic"; // always read fresh local files
 // can resolve "all the Anthropic ones" to concrete postings CLIENT-SIDE — the
 // model only ever emits a company name, never URLs (no hallucination, no tokens).
 export async function GET() {
+  const django = await djangoJsonResponse("/api/pipeline");
+  if (django) return django;
+
   const s = pipelineSummary();
   return Response.json({
     inbox: s.inbox,

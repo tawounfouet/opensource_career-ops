@@ -3,6 +3,7 @@ import fs from "node:fs";
 import { runDiscovery } from "@/lib/core/scan";
 import { rootScript } from "@/lib/career-ops";
 import { parseExplorePatch, DEFAULT_FILTERS, type DiscoveredOffer, type ScanEvent } from "@/lib/explore";
+import { djangoApiBase } from "@/lib/django-api";
 
 // Discovery is HTTP-bound across many ATS boards; give it room. It is FREE —
 // zero LLM tokens (the scanner only does HTTP + JSON, and --dry-run writes nothing).
@@ -19,6 +20,29 @@ export async function POST(req: NextRequest) {
   }
 
   const filters = parseExplorePatch(body, DEFAULT_FILTERS);
+  const djangoBase = djangoApiBase();
+  if (djangoBase) {
+    try {
+      const upstream = await fetch(`${djangoBase}/api/explore`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+        cache: "no-store",
+      });
+      if (upstream.body) {
+        return new Response(upstream.body, {
+          status: upstream.status,
+          headers: {
+            "Content-Type": upstream.headers.get("Content-Type") || "application/x-ndjson; charset=utf-8",
+            "Cache-Control": "no-cache, no-transform",
+            "X-Accel-Buffering": "no",
+          },
+        });
+      }
+    } catch {
+      /* Django unavailable: fall back to local scanner. */
+    }
+  }
 
   // Guard: a data-only checkout (or pre-onboarding) has no scanner. Fail soft.
   if (!fs.existsSync(rootScript("scan-ats-full"))) {

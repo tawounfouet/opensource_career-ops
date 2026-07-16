@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import { careerOpsRoot, rootScript } from "@/lib/career-ops";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,6 +10,9 @@ export const dynamic = "force-dynamic";
 // followup-cadence.mjs --json (the SAME calculator the CLI uses) — we never
 // reimplement the cadence logic, we read its verdict (mirrors /api/doctor).
 export async function GET() {
+  const django = await djangoJsonResponse("/api/followups");
+  if (django) return django;
+
   const script = rootScript("followup-cadence");
   if (!fs.existsSync(script)) return Response.json({ available: false, metadata: null, entries: [] });
   const stdout = await new Promise<string>((resolve) => {

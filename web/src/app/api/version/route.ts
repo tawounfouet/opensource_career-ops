@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execSync } from "node:child_process";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 // The WEB build's own version + channel (NOT the user's data checkout) — read from
 // the repo's VERSION (parent of the web/ cwd). The channel is derived from a
@@ -41,6 +42,9 @@ function webVersion(): string {
 }
 
 export async function GET() {
+  const django = await djangoJsonResponse("/api/version");
+  if (django) return django;
+
   const coreVersion = readVersion();
   const web = webVersion();
   const m = coreVersion.match(/-(rc|beta|alpha|next)\b/i);

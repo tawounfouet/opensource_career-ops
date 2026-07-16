@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { careerOpsRoot } from "@/lib/career-ops";
 import { atomicWriteWithBackup } from "@/lib/core/safe-write";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 function cvPath() {
   return path.join(careerOpsRoot(), "cv.md");
@@ -11,6 +12,9 @@ function cvPath() {
 const MAX_CV_BYTES = 200_000;
 
 export async function GET() {
+  const django = await djangoJsonResponse("/api/cv");
+  if (django) return django;
+
   try {
     return NextResponse.json({ content: fs.readFileSync(cvPath(), "utf8"), exists: true });
   } catch {
@@ -31,6 +35,9 @@ export async function POST(req: Request) {
   if (Buffer.byteLength(body.content, "utf8") > MAX_CV_BYTES) {
     return NextResponse.json({ error: "CV is too large (over 200KB)" }, { status: 413 });
   }
+  const django = await djangoJsonResponse("/api/cv", { method: "POST", body: JSON.stringify(body) });
+  if (django) return django;
+
   // DATA_CONTRACT: cv.md is user-layer and gitignored (no git recovery). Never
   // blind-overwrite — snapshot the prior CV to a .bak first, write atomically.
   try {

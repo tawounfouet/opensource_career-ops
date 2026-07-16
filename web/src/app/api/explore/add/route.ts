@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { addOffersToPipeline } from "@/lib/core/pipeline";
 import type { DiscoveredOffer } from "@/lib/explore";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,6 +18,8 @@ export async function POST(req: NextRequest) {
     return Response.json({ added: 0, error: "bad request" }, { status: 400 });
   }
   if (offers.length === 0) return Response.json({ added: 0 });
+  const django = await djangoJsonResponse("/api/explore/add", { method: "POST", body: JSON.stringify({ offers }) });
+  if (django) return django;
 
   const result = await addOffersToPipeline(offers);
   return Response.json(result);

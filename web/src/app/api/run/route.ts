@@ -4,6 +4,7 @@ import path from "node:path";
 import { resolveCli } from "@/lib/clis";
 import { careerOpsRoot, readMemory } from "@/lib/career-ops";
 import { acquireTrackerWrite, releaseTrackerWrite } from "@/lib/core/run-registry";
+import { djangoApiBase } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -74,6 +75,36 @@ export async function POST(req: Request) {
   const { kind = "evaluate", input, cliId } = body;
   if (!input || !cliId) {
     return new Response(JSON.stringify({ error: "input and cliId required" }), { status: 400 });
+  }
+  const djangoBase = djangoApiBase();
+  if (djangoBase) {
+    try {
+      const upstream = await fetch(`${djangoBase}/api/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind, input, cliId }),
+        cache: "no-store",
+      });
+      if (upstream.ok && upstream.body) {
+        return new Response(upstream.body, {
+          status: upstream.status,
+          headers: {
+            "Content-Type": upstream.headers.get("Content-Type") || "text/plain; charset=utf-8",
+            "Cache-Control": "no-cache, no-transform",
+            "X-Accel-Buffering": "no",
+          },
+        });
+      }
+      if (!upstream.ok) {
+        const text = await upstream.text();
+        return new Response(text, {
+          status: upstream.status,
+          headers: { "Content-Type": upstream.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store" },
+        });
+      }
+    } catch {
+      /* Django unavailable: fall back to local CLI orchestration. */
+    }
   }
   const resolved = resolveCli(cliId);
   if (!resolved) {

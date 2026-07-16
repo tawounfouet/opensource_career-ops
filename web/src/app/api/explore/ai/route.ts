@@ -4,6 +4,7 @@ import path from "node:path";
 import { resolveCli } from "@/lib/clis";
 import { careerOpsRoot, readMemory } from "@/lib/career-ops";
 import { assembleDedupContext } from "@/lib/core/discover";
+import { djangoApiBase } from "@/lib/django-api";
 
 // AI search orchestrates modes/discover.md by running the USER'S configured CLI
 // headless (CLI-agnostic, like the assistant). Web hunting is slow → generous
@@ -37,6 +38,37 @@ export async function POST(req: Request) {
   const query = (body.query || "").trim();
   const cliId = body.cliId;
   if (!query || !cliId) return Response.json({ error: "query and cliId required" }, { status: 400 });
+
+  const djangoBase = djangoApiBase();
+  if (djangoBase) {
+    try {
+      const upstream = await fetch(`${djangoBase}/api/explore/ai`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, cliId }),
+        cache: "no-store",
+      });
+      if (upstream.ok && upstream.body) {
+        return new Response(upstream.body, {
+          status: upstream.status,
+          headers: {
+            "Content-Type": upstream.headers.get("Content-Type") || "text/plain; charset=utf-8",
+            "Cache-Control": "no-cache, no-transform",
+            "X-Accel-Buffering": "no",
+          },
+        });
+      }
+      if (!upstream.ok) {
+        const text = await upstream.text();
+        return new Response(text, {
+          status: upstream.status,
+          headers: { "Content-Type": upstream.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store" },
+        });
+      }
+    } catch {
+      /* Django unavailable: fall back to local CLI orchestration. */
+    }
+  }
 
   const resolved = resolveCli(cliId);
   if (!resolved) return Response.json({ error: `CLI '${cliId}' not found on this machine` }, { status: 404 });

@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { readMemory, rememberFact } from "@/lib/career-ops";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const django = await djangoJsonResponse("/api/memory");
+  if (django) return django;
+
   return NextResponse.json({ memory: readMemory() });
 }
 
@@ -20,6 +24,8 @@ export async function POST(req: Request) {
   }
   const fact = (b.fact ?? "").toString();
   if (!fact.trim()) return NextResponse.json({ error: "fact required" }, { status: 400 });
+  const django = await djangoJsonResponse("/api/memory", { method: "POST", body: JSON.stringify(b) });
+  if (django) return django;
 
   const result = rememberFact(fact);
   if (result === "error") return NextResponse.json({ error: "write failed" }, { status: 500 });

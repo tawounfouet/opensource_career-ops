@@ -81,7 +81,7 @@ export function seedExploreFilters(): { filters: ExploreFilters; seededFrom: str
   const filters: ExploreFilters = { ...DEFAULT_FILTERS, ats: [...DEFAULT_FILTERS.ats] };
   const seededFrom: string[] = [];
 
-  const portals = loadYaml("portals.yml");
+  const portals = loadYaml("config/portals.yml");
   if (portals) {
     const tf = (portals.title_filter ?? {}) as Record<string, unknown>;
     const lf = (portals.location_filter ?? {}) as Record<string, unknown>;

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { careerOpsRoot } from "@/lib/career-ops";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,6 +18,9 @@ export async function POST(req: Request) {
   }
   const company = (body.company || "").toString().trim();
   if (!company) return Response.json({ error: "company required" }, { status: 400 });
+  const django = await djangoJsonResponse("/api/followups/log", { method: "POST", body: JSON.stringify(body) });
+  if (django) return django;
+
   const today = new Date().toISOString().slice(0, 10);
   const num = body.num != null ? `#${body.num} ` : "";
   const note = (body.note || "Followed up").toString().replace(/[\r\n]+/g, " ").trim();

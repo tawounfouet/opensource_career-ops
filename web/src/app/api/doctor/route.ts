@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import { careerOpsRoot, rootScript } from "@/lib/career-ops";
+import { fetchDjangoJson } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,6 +10,16 @@ export const dynamic = "force-dynamic";
 // source of truth the CLI uses to decide onboarding. We never reimplement the
 // prerequisite list; we read the core's verdict.
 export async function GET() {
+  const django = (await fetchDjangoJson("/api/doctor")) as { onboardingNeeded?: boolean; missing?: string[]; warnings?: string[] } | null;
+  if (django) {
+    return Response.json({
+      available: true,
+      onboardingNeeded: !!django.onboardingNeeded,
+      missing: django.missing ?? [],
+      warnings: django.warnings ?? [],
+    });
+  }
+
   const root = careerOpsRoot();
   const doctor = rootScript("doctor");
   if (!fs.existsSync(doctor)) {

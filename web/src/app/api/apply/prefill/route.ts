@@ -4,10 +4,18 @@ import path from "node:path";
 import { resolveCli } from "@/lib/clis";
 import { careerOpsRoot, readMemory } from "@/lib/career-ops";
 import { getSession } from "@/lib/apply/session";
+import { djangoResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 320;
+
+declare global {
+  // eslint-disable-next-line no-var
+  var __coDjangoApplySessions: Set<string> | undefined;
+}
+
+const DJANGO_SESSIONS: Set<string> = (globalThis.__coDjangoApplySessions ??= new Set());
 
 /**
  * Pull a JSON object out of an LLM's text answer, tolerating code fences,
@@ -80,6 +88,22 @@ export async function POST(req: Request) {
     return Response.json({ error: "bad json" }, { status: 400 });
   }
   const { sessionId, cliId } = body;
+  if (sessionId && DJANGO_SESSIONS.has(sessionId)) {
+    const django = await djangoResponse("/api/apply/prefill", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    if (django) {
+      return new Response(django.body, {
+        status: django.status,
+        headers: {
+          "Content-Type": django.headers.get("Content-Type") || "application/x-ndjson",
+          "Cache-Control": "no-store",
+        },
+      });
+    }
+    DJANGO_SESSIONS.delete(sessionId);
+  }
   const t0 = Date.now();
   const encoder = new TextEncoder();
   const logPath = path.join(careerOpsRoot(), ".career-ops-web", "apply-prefill.log");

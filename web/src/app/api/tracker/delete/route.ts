@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { careerOpsRoot, rootScript, trackerCanDelete } from "@/lib/career-ops";
 import { isTrackerWriting } from "@/lib/core/run-registry";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,8 +20,13 @@ let deleting = false;
 function parseOrphan(stderr: string): string | null {
   // dry-run: "(report file would be orphaned: <path>)"
   // real:    "Note: report file may now be orphaned — <path>"
-  const m = stderr.match(/orphaned[:—-]+\s*([^\n)]+)\)?\s*$/im);
-  return m ? m[1].trim() : null;
+  const m = stderr.match(/orphaned[:—-]+\s*(.+?)\s*$/im);
+  if (!m) return null;
+  let value = m[1].trim();
+  while (value.endsWith(")") && (value.match(/\)/g) ?? []).length > (value.match(/\(/g) ?? []).length) {
+    value = value.slice(0, -1).trimEnd();
+  }
+  return value;
 }
 
 export async function POST(req: Request) {
@@ -35,6 +41,9 @@ export async function POST(req: Request) {
     return Response.json({ error: "a numeric application number is required" }, { status: 400 });
   }
   const dryRun = !!body.dryRun;
+
+  const django = await djangoJsonResponse("/api/tracker/delete", { method: "POST", body: JSON.stringify(body) });
+  if (django) return django;
 
   if (!trackerCanDelete()) {
     return Response.json(

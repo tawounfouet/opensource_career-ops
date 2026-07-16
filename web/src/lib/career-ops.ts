@@ -23,7 +23,7 @@ export function careerOpsRoot(): string {
  * as module imports and fails the production build otherwise.
  */
 export function rootScript(nameNoExt: string): string {
-  return path.join(careerOpsRoot(), `${nameNoExt}.mjs`);
+  return path.join(careerOpsRoot(), "scripts", "js", `${nameNoExt}.mjs`);
 }
 
 // Feature-detect the core's `tracker.mjs delete --num` row-delete (#1200) by probing
@@ -162,7 +162,8 @@ export function doctorState(): {
     ["cv.md", "cv.md"],
     ["config/profile.yml", "config/profile.yml"],
     ["modes/_profile.md", "modes/_profile.md"],
-    ["portals.yml", "portals.yml"],
+    ["config/portals.yml", "config/portals.yml"],
+    ["scripts/js/doctor.mjs", "scripts/js/doctor.mjs"],
   ];
   const missing = prereqs.filter(([rel]) => !has(rel)).map(([, label]) => label);
   const hasCv = has("cv.md");

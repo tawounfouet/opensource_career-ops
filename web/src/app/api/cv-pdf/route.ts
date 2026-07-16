@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
 import { careerOpsRoot } from "@/lib/career-ops";
+import { djangoApiBase } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,6 +13,29 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const company = (req.nextUrl.searchParams.get("company") ?? "").trim();
   if (!company) return new Response("company required", { status: 400 });
+  const djangoBase = djangoApiBase();
+  if (djangoBase) {
+    try {
+      const upstream = await fetch(`${djangoBase}/api/cv-pdf?company=${encodeURIComponent(company)}`, { cache: "no-store" });
+      const contentType = upstream.headers.get("Content-Type") || "";
+      if (upstream.ok && upstream.body && contentType.includes("application/pdf")) {
+        return new Response(upstream.body, {
+          status: upstream.status,
+          headers: {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": upstream.headers.get("Content-Disposition") || "inline",
+            "Cache-Control": "no-store",
+          },
+        });
+      }
+      if (!upstream.ok) {
+        const text = await upstream.text();
+        return new Response(text, { status: upstream.status, headers: { "Content-Type": "text/plain", "Cache-Control": "no-store" } });
+      }
+    } catch {
+      /* Django unavailable: fall back to local file serving. */
+    }
+  }
   // Token-extract instead of replace-then-trim: same slug, and no `-+$`-style
   // pattern that backtracks polynomially on adversarial input (CodeQL).
   const slug = (company.toLowerCase().match(/[a-z0-9]+/g) ?? []).join("-");

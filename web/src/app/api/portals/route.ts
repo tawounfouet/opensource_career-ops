@@ -3,6 +3,7 @@ import path from "node:path";
 import yaml from "js-yaml";
 import { careerOpsRoot } from "@/lib/career-ops";
 import { atomicWriteWithBackup } from "@/lib/core/safe-write";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,6 +18,18 @@ function isObj(v: unknown): v is Record<string, unknown> {
   return !!v && typeof v === "object" && !Array.isArray(v);
 }
 
+export async function GET() {
+  const django = await djangoJsonResponse("/api/portals");
+  if (django) return django;
+
+  const file = path.join(careerOpsRoot(), "config", "portals.yml");
+  try {
+    return Response.json({ content: yaml.load(fs.readFileSync(file, "utf8")) ?? {}, exists: true });
+  } catch {
+    return Response.json({ content: {}, exists: false });
+  }
+}
+
 export async function POST(req: Request) {
   let body: { roles?: string[]; location?: string[] };
   try {
@@ -26,6 +39,8 @@ export async function POST(req: Request) {
   }
   const roles = (Array.isArray(body.roles) ? body.roles : []).map((r) => String(r).trim()).filter(Boolean).slice(0, 24);
   if (roles.length === 0) return Response.json({ error: "no roles" }, { status: 400 });
+  const django = await djangoJsonResponse("/api/portals", { method: "POST", body: JSON.stringify(body) });
+  if (django) return django;
 
   const root = careerOpsRoot();
   const file = path.join(root, "portals.yml");

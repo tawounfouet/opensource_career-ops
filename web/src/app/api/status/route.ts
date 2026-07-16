@@ -4,6 +4,7 @@ import path from "node:path";
 import { careerOpsRoot } from "@/lib/career-ops";
 import { canonicalizeStatus } from "@/lib/core/states";
 import { atomicWrite } from "@/lib/core/safe-write";
+import { djangoJsonResponse } from "@/lib/django-api";
 
 // Writeback: UPDATE the status cell of an EXISTING tracker row only. Never adds
 // rows — per the core data contract, new rows go through the TSV + merge flow.
@@ -28,6 +29,8 @@ export async function POST(req: Request) {
   if (!canon) {
     return NextResponse.json({ error: `not a canonical status: ${status}` }, { status: 400 });
   }
+  const django = await djangoJsonResponse("/api/status", { method: "POST", body: JSON.stringify(body) });
+  if (django) return django;
 
   const file = path.join(careerOpsRoot(), "data", "applications.md");
   let md: string;

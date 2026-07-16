@@ -1,0 +1,32 @@
+[project]
+name = "career-ops-backend"
+version = "0.1.0"
+description = "Django backend bridge for career-ops"
+requires-python = ">=3.12"
+dependencies = [
+  "Django>=5.1,<6",
+  "djangorestframework>=3.15,<4",
+  "django-cors-headers>=4.4,<5",
+  "playwright>=1.49,<2",
+  "PyYAML>=6,<7",
+  "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<9",
+  "pytest-django>=4.9,<5",
+]
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["apps*", "config*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.development"
+pythonpath = ["."]
+testpaths = ["tests"]

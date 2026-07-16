@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Embedded Application</title>
+  </head>
+  <body>
+    <aside>
+      <label for="keyword">Search jobs</label>
+      <input id="keyword" name="keyword">
+    </aside>
+    <iframe
+      title="Application frame"
+      srcdoc='
+        <!doctype html>
+        <html lang="en">
+          <body>
+            <form>
+              <label for="full_name">Full name</label>
+              <input id="full_name" name="full_name" required>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required>
+              <label for="linkedin">LinkedIn</label>
+              <input id="linkedin" name="linkedin" type="url">
+            </form>
+          </body>
+        </html>'>
+    </iframe>
+  </body>
+</html>

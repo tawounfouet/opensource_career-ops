@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('fr') }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV — {{ identity.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+{{ css_inline | safe }}
+  </style>
+</head>
+<body>
+  <div class="cv-page">
+
+    {# ── Barre latérale gauche ────────────────────── #}
+    <aside class="sidebar">
+
+      {# Coordonnées #}
+      <div class="sidebar-section">
+        <div class="sidebar-title">Profil</div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+          <span>{{ identity.email }}</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <span>{{ identity.phone }}</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span>{{ identity.location }}</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <span>Mobilité : {{ identity.mobility }}</span>
+        </div>
+        {% if identity.driving_license %}
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
+          <span>{{ identity.driving_license }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      {# QR Code LinkedIn #}
+      {% if qr_data_uri %}
+      <div class="sidebar-section">
+        <div class="qr-wrapper">
+          <img
+            src="{{ qr_data_uri }}"
+            alt="QR Code LinkedIn — {{ identity.name }}"
+            class="qr-code"
+          >
+          <span class="qr-label">LinkedIn</span>
+        </div>
+      </div>
+      {% endif %}
+
+      {# Langues #}
+      {% if languages %}
+      <div class="sidebar-section">
+        <div class="sidebar-title">Langues</div>
+        {% for lang in languages %}
+        <div class="sidebar-bullet">{{ lang.language }} — {{ lang.level }}{% if lang.note %} ({{ lang.note }}){% endif %}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Réglementation & normes #}
+      {% if regulations %}
+      <div class="sidebar-section">
+        <div class="sidebar-title">Normes &amp; Réglementation</div>
+        {% for item in regulations %}
+        <div class="sidebar-bullet">{{ item }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Compétences techniques #}
+      {% if hard_skills %}
+      <div class="sidebar-section">
+        <div class="sidebar-title">Compétences</div>
+        {% for skill in hard_skills %}
+        <div class="sidebar-bullet">{{ skill }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Soft skills #}
+      {% if soft_skills %}
+      <div class="sidebar-section">
+        <div class="sidebar-title">Savoir-faire</div>
+        {% for skill in soft_skills %}
+        <div class="sidebar-bullet">{{ skill }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Centres d'intérêt #}
+      {% if interests %}
+      <div class="sidebar-section">
+        <div class="sidebar-title">Centres d'intérêt</div>
+        {% for interest in interests %}
+        <div class="sidebar-bullet">{{ interest }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </aside>
+
+    {# ── Colonne principale droite ────────────────── #}
+    <main class="main-content">
+
+      {# Bandeau d'identité #}
+      <header class="identity-banner">
+        <div class="cv-name">{{ identity.name }}</div>
+        <div class="cv-job-title">{{ identity.title }}</div>
+        <div class="cv-objective">{{ identity.objective }}</div>
+      </header>
+
+      {# Corps du contenu #}
+      <div class="main-body">
+
+        {# Expériences #}
+        {% if experiences %}
+        <section class="section">
+          <div class="section-title">Expériences</div>
+          {% for exp in experiences %}
+          <div class="experience-entry no-break">
+            <div class="experience-header">
+              <span class="experience-date">{{ exp.start }} — {{ exp.end }}</span>
+              <span class="experience-role">{{ exp.role }}</span>
+            </div>
+            <div class="experience-organization">{{ exp.organization }} — {{ exp.location }}</div>
+            <ul class="experience-missions">
+              {% for mission in exp.missions %}
+              <li>{{ mission }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {# Formations #}
+        {% if education %}
+        <section class="section">
+          <div class="section-title">Formations</div>
+          {% for edu in education %}
+          <div class="education-entry no-break">
+            <span class="education-year">{{ edu.year }}</span>
+            <span class="education-institution">{{ edu.institution }} — {{ edu.location }}</span>
+            <span class="education-degree">{{ edu.degree }} — {{ edu.field }}</span>
+          </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {# Projets académiques #}
+        {% if projects %}
+        <section class="section">
+          <div class="section-title">Projets</div>
+          {% for project in projects %}
+          <div class="project-entry no-break">
+            <span class="project-year">{{ project.year }}</span>
+            <span class="project-title">{{ project.title }}</span>
+          </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

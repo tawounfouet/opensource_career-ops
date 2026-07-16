@@ -125,3 +125,4 @@ backend/.pytest_cache/
 backend/**/*.pyc
 backend/**/__pycache__/
 backend/*.egg-info/
+career-ops/

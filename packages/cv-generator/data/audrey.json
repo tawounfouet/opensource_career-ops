@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lang": "fr",
+    "generated": "2026-07-14"
+  },
+  "identity": {
+    "name": "Audrey Kwekeu",
+    "title": "Ingénieure Qualité & Affaires Réglementaires",
+    "objective": "Recherche active d'un poste en CDD ou CDI — Secteur biomédical, pharmaceutique ou dispositifs médicaux",
+    "email": "kwekeuaudrey@gmail.com",
+    "phone": "+33 6 00 00 00 00",
+    "location": "Marseille, France",
+    "mobility": "France",
+    "driving_license": "Permis B en cours",
+    "linkedin": "https://www.linkedin.com/in/audrey-kwekeu",
+    "linkedin_qr": "images/linkedin-qr.png"
+  },
+  "experiences": [
+    {
+      "start": "Sept. 2024",
+      "end": "Août 2025",
+      "role": "Chargée qualité & affaires réglementaires",
+      "organization": "CELLAVISION RAL DIAGNOSTICS",
+      "location": "Martillac, France",
+      "missions": [
+        "Mise en place de la certification MDSAP au sein de l'entreprise",
+        "Gestion des enregistrements et du maintien des autorisations de mise sur le marché (AMM) en France et dans les pays d'exportation",
+        "Conseil et assistance sur les aspects réglementaires auprès des services concernés (R&D, Production, Qualité, Marketing, Ventes)",
+        "Réalisation ou mise à jour des dossiers techniques",
+        "Participation à l'analyse et l'évaluation des risques liés aux produits CE",
+        "Veille réglementaire et normative"
+      ]
+    },
+    {
+      "start": "Avril 2024",
+      "end": "Août 2024",
+      "role": "Ingénieur R&D",
+      "organization": "CINAM",
+      "location": "Marseille, France",
+      "missions": [
+        "Modélisation de la génération de gouttes en microfluidique pour des applications biomédicales",
+        "Conception, développement et évaluation de dispositifs médicaux innovants en intégrant les dernières avancées technologiques"
+      ]
+    },
+    {
+      "start": "Juin 2023",
+      "end": "Août 2023",
+      "role": "Ingénieur d'Application",
+      "organization": "T2S GROUP",
+      "location": "Casablanca, Maroc",
+      "missions": [
+        "Adaptation et mise en œuvre de solutions biomédicales innovantes pour répondre aux besoins spécifiques des clients (IRM, Scanners)",
+        "Installation et formation à l'utilisation des équipements",
+        "Maintenance et bon fonctionnement via le service après-vente"
+      ]
+    },
+    {
+      "start": "Juin 2022",
+      "end": "Août 2022",
+      "role": "Ingénieur biomédical",
+      "organization": "Hôpital Ibn Sina",
+      "location": "Rabat, Maroc",
+      "missions": [
+        "Élaboration des cahiers des charges pour l'achat de nouveaux équipements",
+        "Gestion et surveillance des équipements médicaux, suivies de la coordination avec les fournisseurs",
+        "Formation du personnel médical à l'utilisation des équipements, ainsi que le respect des normes de sécurité et de réglementation dans le cadre hospitalier"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "year": "2024 – 2025",
+      "institution": "UTC",
+      "location": "Compiègne",
+      "degree": "Master 2 spécialisé",
+      "field": "Dispositifs médicaux & affaires réglementaires"
+    },
+    {
+      "year": "2023 – 2024",
+      "institution": "Polytech",
+      "location": "Marseille",
+      "degree": "Génie biomédical",
+      "field": "Instrumentation biomédicale"
+    },
+    {
+      "year": "2021 – 2023",
+      "institution": "ENSAM",
+      "location": "Rabat",
+      "degree": "Génie biomédical",
+      "field": "Instrumentation biomédicale"
+    },
+    {
+      "year": "2019 – 2021",
+      "institution": "Al Khansaa",
+      "location": "Casablanca",
+      "degree": "Classes préparatoires aux grandes écoles",
+      "field": "Option Mathématiques–Physique"
+    }
+  ],
+  "projects": [
+    {
+      "year": "2024 – 2025",
+      "title": "Mise en conformité des dispositifs médicaux de diagnostic in vitro avec le règlement UE 2017/746"
+    },
+    {
+      "year": "2023 – 2024",
+      "title": "Centre de maintenance biomédicale à Kinshasa et développement d'une solution de GMAO"
+    },
+    {
+      "year": "2022 – 2023",
+      "title": "Application de gestion d'ambulances"
+    }
+  ],
+  "languages": [
+    { "language": "Français", "level": "Natif" },
+    { "language": "Anglais", "level": "B2", "note": "TOEIC : 865/990" }
+  ],
+  "regulations": [
+    "Règlement UE 2017/745",
+    "Règlement UE 2017/746",
+    "BPF",
+    "FDA",
+    "MDSAP",
+    "IA Act",
+    "ISO 13485",
+    "ISO 62304",
+    "ISO 14971",
+    "ISO 62366",
+    "ISO 10993"
+  ],
+  "hard_skills": [
+    "Python",
+    "LabVIEW",
+    "C / MATLAB",
+    "Java / PHP / MySQL",
+    "FPGA",
+    "MS Project",
+    "Excel VBA",
+    "Gestion de projet",
+    "AMM"
+  ],
+  "soft_skills": [
+    "Travail en équipe",
+    "Organisation",
+    "Adaptabilité",
+    "Autonomie",
+    "Rigueur"
+  ],
+  "interests": [
+    "Associations étudiantes",
+    "Chorale",
+    "Écriture de poésie",
+    "Course à pied",
+    "Voyage"
+  ]
+}

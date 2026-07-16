@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV — Audrey Kwekeu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #0CC0DF;
+  --color-primary-dark: #0A9DBF;
+  --color-primary-light: #E8F7FB;
+  --color-header-background: #B2D5E8;
+  --color-header-accent: #8BBDD6;
+  --color-surface: #FFFFFF;
+  --color-text-primary: #1A1A2E;
+  --color-text-secondary: #4A4A68;
+  --color-text-muted: #7A7A98;
+  --color-sidebar-heading: #FFFFFF;
+  --color-divider: #D0D0E0;
+  --color-divider-strong: #1A1A2E;
+  --color-accent: #0CC0DF;
+
+  --space-xs: 2px;
+  --space-sm: 6px;
+  --space-md: 10px;
+  --space-lg: 14px;
+  --space-xl: 18px;
+  --space-xxl: 24px;
+
+  --font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+}
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 9pt;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+}
+
+/* ── Layout 2 colonnes ───────────────────────────── */
+
+.cv-page {
+  display: flex;
+  width: 210mm;
+  height: 297mm;
+}
+
+/* ── Barre latérale (29%) ────────────────────────── */
+
+.sidebar {
+  width: 29%;
+  background: var(--color-primary);
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  color: var(--color-sidebar-heading);
+  position: relative;
+}
+
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-dark) 0%,
+    var(--color-primary) 50%,
+    var(--color-primary-dark) 100%
+  );
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar-title {
+  font-weight: 700;
+  font-size: 10pt;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-sidebar-heading);
+  padding-bottom: 5px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+  position: relative;
+}
+
+.sidebar-title::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: var(--color-sidebar-heading);
+}
+
+.sidebar-item {
+  font-size: 8pt;
+  font-weight: 400;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.sidebar-item .icon {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  margin-top: 1px;
+  opacity: 0.8;
+}
+
+.sidebar-item .icon svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sidebar-bullet {
+  font-size: 8pt;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.92);
+  padding-left: 2px;
+  position: relative;
+}
+
+.sidebar-bullet::before {
+  content: "▸";
+  position: absolute;
+  left: -10px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 7pt;
+}
+
+/* QR Code */
+.qr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+}
+
+.qr-code {
+  width: 70px;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+.qr-label {
+  font-size: 6.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* ── Colonne principale (71%) ─────────────────────── */
+
+.main-content {
+  width: 71%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  position: relative;
+}
+
+/* Ligne d'accent en haut de page */
+.main-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-header-background));
+  z-index: 1;
+}
+
+/* ── Bandeau d'identité ───────────────────────────── */
+
+.identity-banner {
+  background: linear-gradient(135deg, var(--color-header-background) 0%, var(--color-header-accent) 100%);
+  text-align: center;
+  padding: 20px 24px 16px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.identity-banner::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+}
+
+.cv-name {
+  font-weight: 700;
+  font-size: 22pt;
+  color: var(--color-text-primary);
+  letter-spacing: 0.02em;
+  margin-bottom: 3px;
+}
+
+.cv-job-title {
+  font-weight: 600;
+  font-size: 11.5pt;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+.cv-objective {
+  font-weight: 400;
+  font-size: 8.5pt;
+  color: var(--color-text-secondary);
+  line-height: 1.35;
+  max-width: 92%;
+  margin: 0 auto;
+}
+
+/* ── Sections du contenu principal ────────────────── */
+
+.main-body {
+  flex: 1;
+  padding: 14px 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 11pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 2.5px solid var(--color-divider-strong);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 14px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Bloc d'expérience ────────────────────────────── */
+
+.experience-entry {
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-left: 2px solid var(--color-divider);
+  position: relative;
+}
+
+.experience-entry:last-child {
+  margin-bottom: 0;
+}
+
+.experience-entry::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 3px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+.experience-header {
+  margin-bottom: 2px;
+}
+
+.experience-date {
+  font-weight: 700;
+  font-size: 8pt;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.experience-role {
+  font-weight: 700;
+  font-size: 9.5pt;
+  color: var(--color-text-primary);
+  display: block;
+}
+
+.experience-organization {
+  font-style: italic;
+  font-size: 8.5pt;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.experience-missions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.experience-missions li {
+  font-size: 8.5pt;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  position: relative;
+  padding-left: 12px;
+}
+
+.experience-missions li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 9pt;
+}
+
+/* ── Formation ────────────────────────────────────── */
+
+.education-entry {
+  margin-bottom: 7px;
+  padding-left: 10px;
+  border-left: 2px solid var(--color-divider);
+  position: relative;
+}
+
+.education-entry::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 3px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+.education-year {
+  font-weight: 700;
+  font-size: 8pt;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.education-institution {
+  font-style: italic;
+  font-size: 8.5pt;
+  color: var(--color-text-secondary);
+}
+
+.education-degree {
+  font-size: 8.5pt;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+/* ── Projets académiques ──────────────────────────── */
+
+.project-entry {
+  margin-bottom: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--color-divider);
+  position: relative;
+}
+
+.project-entry::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 3px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+.project-year {
+  font-weight: 700;
+  font-size: 8pt;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.project-title {
+  font-size: 8.5pt;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+/* ── Utilitaires ──────────────────────────────────── */
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.no-break {
+  break-inside: avoid;
+}
+
+/* ── Print optimisations ──────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .cv-page {
+    page-break-inside: avoid;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="cv-page">
+
+    
+    <aside class="sidebar">
+
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">Profil</div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+          <span>kwekeuaudrey@gmail.com</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <span>+33 6 00 00 00 00</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span>Marseille, France</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <span>Mobilité : France</span>
+        </div>
+        
+        <div class="sidebar-item">
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
+          <span>Permis B en cours</span>
+        </div>
+        
+      </div>
+
+      
+      
+      <div class="sidebar-section">
+        <div class="qr-wrapper">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAAByCAIAAAA52KNxAAAsfElEQVR4nO19eXRVVZb3ufe+++YhL7wEEkJASiAQwqAIVrEUlAKVUqlGBRW7bFosSpGhKUFFKCA2UnaXA5TgYiykXQpSVlMoooUMSokoIpjIoMRACKHIPL/7pnvP98ev3+bkvoGgfqvX9y33H8l7955hn33O3mdP5zzJvf8M+xG+H8j/2wj8/wA/EvEHAAv+bewfuCfb/b+Lyv9zsK2m7V9P1rEfV+IPAj8S8QeAH4n4A8CPRPwB4Eci/gDwP7sz54xzjs+SJF1RE5xzSZJQHR9MLVDLVCDxq+l50sKpcBMRSIT0uF12aJftnRERxTqpsEnfGTpIUzexcRoe55zGmRR7+pqqfZE6qZoyDCM9hmmARpeUjpeIGA6H33vvPcMwrrQbwzDcbve4ceNkWU5cETSkw4cPnzt3jpCwWCzjx49XVbW+vn7fvn26rnfr1u3GG2+UJOn06dNffvllLBYbNmxY7969GWMffvhhfX190gFIkhSJRHr37j1s2DBZlo8dO1ZWVhaLxa6//vqePXsSPpFIZO/eve3t7VfKZ4wxq9V62223KYqSsoR7/xn3/jNbL7Y2NTXZ7XZZlmVZVjoNsiwzxrp16xYOh3Vd55xjGggMw8Dz++67Dy2D1j6fr6WlhXN+8uRJVVUZYzfddFMsFuOc//GPfwTGK1asiEQinPPRo0dLAogYWiwWxtikSZNQcuHChUDp1VdfjUajsVjMMAzDMFpaWvLy8kx1OzM6SZKysrI0TdN13TS0N6tbQb1LKxGts/iy7yRgYkGF9EInEolQy7IsWywWp9PJGPN6vdFoFAWwanRd13UdSwAtOxwO1pFPUYAgHA5Tv/jg8/lAXxZnQ0VRSG50HrCqMHmpylwiIlo3DKNr164PP/xwZ5a9rusvvfRSMBikJ0THRFwnT57cr18/i8WyYcOGqqqqSCRSXFyMaVu0aFE0Gu3bty8W0YgRIxYsWKAoSnV1dXFxsdVqLSsrE8Wiy+WaNWsW6kqSFAqFhg0bZhrIG2+8ceLEiVAoNHXq1F69etHbzMzMRx99tDOj45yvW7euurpaHF3yosTOLS0tLpeLMVZUVARGiMVi0RQQi8V0XQ+Hw126dGGM9ejRIxwOg3F0Xcdb+gpAa7FY7LrrrgM2oMJVV11FbRpxAF9jtCIA50AgEAqFTPhgIT/99NMoBs5ljO3du9cwjNbW1p49ezLG+vTp08nRxWKxQYMGMca6du0aCoVMvJycncVdjERP+okyLTdUpFoQhcRTBIqioBhYMhaLmfhOVLYAxLzUuMViMUl6fIWIEIcDZkwcJhg81egwlk7y/qURmmSKLMufffbZiy++CKkkIqFp2sKFCwcPHmxqS1GU0tLS5557TtO0n//85w8//LDFYvnLX/6ybds2sZGysjLDMLxe78qVK61Wa3t7+wMPPKBp2rXXXvvUU0+ZpCoouHDhwsLCQsMwnnjiiaqqqvb29l/96leJ1LFarUePHr3syDG1R44cef755xPnOBQKPf7449ddd13npWeSlUhLrKqqauvWraYKkiQZhvHQQw8lEpExVldX98YbbxiGoarqtGnTGGOlpaWmRtC4xWKZPHmy3W4vLy+fPn26YRj19fVPPvlk0vkfM2bMjTfeyBh75plnGGOapr3xxhtJx9P5kVdXV2/ZsiXp6CZNmiQK2ctCkpVIqIB3kqKVitPpudVqxWeLxQLMTCWh/TDGIAqZIMVYnDfpKwrIskw7+HfTmRNRTdrOleqS5sX83VoRAWjt3LlzxIgRiqKcP38+vc6Un5//+eef2+32kpKSIUOGiHQ8e/asWJdzvmPHDk3TsFpdLtfRo0enTJlCOHPOH3vssWnTprlcrjlz5rz33nsmTej/EiRh5+8JaKehoaGhoeGyhQ3DsNlsQ4cOlWW5urq6pKTE1JRoTXLOBwwYQK9kWU7Urrp161ZUVCTLcmZm5g8ynM5Ayo3le4LdbldVNRaLmZ7DSqMFIklSLBbTNM3r9WqaZppIu91usVhCoRCRUtM0fID6nbjGI5FIOBx2OBxXZDIkInlF5ZOw83dQ60WQZdkwjAkTJvzxj39MJKIsy7fddtvRo0fxVZKks2fP3nzzzZIkwW6h55zzxYsXT5s2LRwO+3w+WZZjsdj48eO//vrrrl27Hjp0CHQkMAxDluWXX3553bp1siy3tbV95yFc6fDTycQ0k3nZblRVzcrKEguLrgd8gPiTZfn8+fNJN2Wv1xsIBFh8F1IUpbKysrq6mtYm/SVzS5QhtH6TYptmCN+diIk1nU5nXl4eTE4Rs1AoZLfb07eraVpVVVUoFMrIyIB4qqmpaW9vVxSFVlxFRYXX662srMTidblcgUBAUZSWlpb6+nrGWH19fVVVFawXYJifnx+NRgOBwLlz5zweT11dXa9evSRJamtrq6ur45xnZWW5XC6atkgkYrfbk7Knw+HIzc016YmSJGma5nK5Oq9pM5bM7Bs4cCCMtmg0qmlaKAGCwSCMPE3TRLOPc75//340a7fb0drSpUuj0Sjn/MEHH1RV1WazwWKxWCx2u91mszkcDozk5ptvDoVCnPMVK1Zg2DabzW63W61Wm81mtVodDkdpaWkkEqmsrPR6vYyxkSNHtre3c843b96MRhYvXhwOh0VU4fggs+/qq6+GbRcOh4PBYNLRoYqu60VFRey7mX00CbIsW63WxGmkdQFyJJ2bcDgMbo1GoygTDodpTUFzBN1JPQRlmcDv5Jsh3ODXcTgckUiEMRYKhWw2G6qgDJxjYi0ThmSDWywWkzEmDvCKNoYku7Omafv37+ed8KRHIhFxN6B2OOfdu3cfMGCApmkWi+Wjjz6SZTk7O3v06NGKohw+fLi5udlms/3sZz9TFCUYDH766adMoBRZ0AUFBT169JBl+ciRI3V1dZ0cErSfkpKSmpoawzCGDRsmqjuhUGjv3r3p3QKEjKhCpQHzSpQkqays7Oc//3knMU4kNMY/ZsyYP/3pT5IkFRcX33zzzYyx119/fcWKFYyxESNGfPbZZ06nc9euXVar9dy5c1dddVXSZufMmTN9+nTG2NixY/fs2ZO4NNLsGM8++yzMzX379o0aNYreVlZWjhs3rpOjS2w56cLqQERd18Vdr/NNkzVGAJkCzlIURdd1qIeKooTDYRZfxVarFaofY4z0Ibh/GGPRaBRVqFlVVeE+IJPRVIWQh/ClEXHOSbB0fnSEBktNQSYSUVXVhx9+mMRW5yEWi3Xt2pU6QPVvv/1248aNjDHDMB5++OFIJFJQUAAmuvfee6+//nqPxwPq+Hy+Rx99VNO0oqIiNDJkyBA4LxobG9etW6eq6sWLFyGC/+u//qtr167RaBT6Y58+fdBd37594UjmnK9bt87hcIh+XMaY1WqdNm1adXX1dzAlMjIyWHrSY3/Z8o8WTOZ3BlAfu7PY3+9+9zsqYwpTJEYtKCADeOSRR0RUSZA5nU4qBv8FVXn66aepPCZp//79iR1dKSQNH5l3Z+xZxB2yLPMrdJZghOTQxZ6LEQIDcv8BFSpGOBHfkTcX8Q0ueGpBF4vFEolEoBvgFfzhqqqiX2qWCSZDovmUCpJu6GlIcYmdQ6HQggULgsFgfn7+k08+qShKSUnJK6+8ctmNLBaLZWdnL168WJblPn36kJaH0VZXV8+aNSsUCk2fPv26665jgpIhgqIop06dWrlyZSgUGjdu3D333EOvOOezZ8/u27cvLG6oR48//jhLmGNd13NyclauXMnjm2QsFuvTp48kSeFw+Nlnn62rq0vPzig5Y8aMpN7SlEDKdnNzM+yQgoICKL1vvfWWKTiJKKII0OlycnKgBiI8QhEMznlxcTGmYfPmzWArMQiDRYSSf/vb37DQpk+fjp1qxowZeLJv3z4K0ei6Dg1JxIdip8XFxVQSQCHTHj16YJ2mB8bYtm3bElEFpGNnJsQcYEgwxmw2W6L5DBONqoBHSG2WhMCF6KoR/4pbEI97ufGX1hrUYAyDCREVDEPTtGg0Sq5ccT1S4BcIkM0K8lGPqUCKh0YSUU2zhJM4IM6ePXvHHXeEQqGCgoKdO3dS9oXH4/nDH/6wa9cuKmmz2TZt2mS3291uN3F9Kizp+b/927+dOnUqMzNz/fr1DoejoqJi9uzZsVgsPz//nXfesVqtX3zxxe233x4Oh8eOHbtz505FUV577bVly5ZZLJbVq1fn5eW53e4dO3bYbLavvvrq8ccf13X9pptumjdvnqqqf//738ePH69p2qJFi0aPHp2GXmmAx8Pfs2fP/vbbb7Ozs9euXWu1WlmKPTqJst3U1PTuu+8ahmG322+99Va8NQzDYrGYghKGYYwdO9bn89GkUSNJSYmH+/fvP3bsmNvtxtdQKPT2228bhjF69GjkPpw+fXrXrl3wp91yyy2Koixfvvyjjz5ijAWDQc650+m89dZbFUUJBAJoJCcnZ9y4cYqifPjhh++//75hGFOnThVx6PwOSSBJ0p49ezDfLO1iTLJpSPGQCNEFbij6LBIRr0w5ApzzWCxG+7XIUCzOvFCbqR0mTLLYBfEXcaLYF2VVkLLNO6rcacK/YvSVHoqNcM4xahHVpGC2nTnnffr0eeONNzjnfr8fDW3YsGHFihXYtkpKSkhXiEajv/zlL7E6JEkKhUIjR45cs2aNLMvvvffewoULo9HopEmTjh49arFYVq1a9R//8R+yLC9evLh3796cc0jevLy8I0eOcM5JJtxzzz3QxtevXz906FBJkubNm/fSSy/puj537tzz588HAoGdO3fa7fYBAwagbmZmJgj9m9/8ZuLEiYZh5Ofng3bTpk379NNP0RpWLufc5XLt37//0UcfNQzjnnvuWbBgATkBdF3v3bs3SP/mm2+GQiHRqXEZItJU2+32a665RhJSXmpqar766ivwUWFhIVXRdf3kyZOiH7RLly5opLm5+fjx48h9GDhwoCzLDQ0NpaWljLH8/Hy4mMD1TqdzyJAhNIu6rmdnZ2dnZ0uS1N7eXlpayjnPzc2FPfPNN9+UlZVhdnVdd7lc11xzDboGW+Tl5eXl5bG4vinL8smTJ7/66iubzda/f//u3buzOGNWVlaiosfjodANAJunJEl4TmpsqvXYYWMJBALNzc0ZGRm1tbXEDhB5GRkZ7e3t0IFIFTcMIzMzU1VVdKlpms/na2ho8Pl8wWBQinvAWlpaLBaLw+Hw+/2kRlAjJjmgKEp7e3tbW5vP57NarX6/H97ApqamWCxGodSGhgao1klHZRiGx+PBVhAIBHw+X2ZmZl1dnd1uh3hxuVxtbW1+v7+lpcXj8aBf4uLGxkYytIFhZmZmOo4mPVHX9dra2tbW1oMHD2ZlZQUCgS5dumRlZamqumDBgubm5pqamra2NkMAVKmrq6urq6upqQkGg++++67f7w8EArA3GWMulysrK8tut2/cuLGpqam2tpaydhIBtuO6detAwRUrVjQ1NbW2tt5xxx0+ny8rKwt0URSlS2rIysqyWCxbt25Fa01NTXV1dRUVFYMHD/b7/V26dAkEAna7/Z/+6Z8aGxtramqamprEEXHO//mf/9nr9aI1v98/YMAAOGU7pSdCsrhcrtraWnqIGfB4PF6vN1HPQgyExeNETqezsbGR6jLG2tvbITRVVfV4PKZNPOm8YvFyzmVZ9nq9kiS1tLQ0NzdTs7quI36QBkKhEDry+XyYy7q6OsKNMYbFLuJD0Nra2traatqj0uzOZDtfopfT6bz22mslSWpsbDxz5gzn/B//+Mfx48cT/a8AzrnVaoWTxu12DxkyhDqz2WwXLlwg6QOETpw4gQD8oEGDRDdXU1NTeXm5y+UKh8ODBw+Gs76kpESW5R49epgKpwFJklpbWxG3MAzj9OnTmqZpmjZw4MBAIIDNPRwO5+bmlpSURKPRzMzMXr16ybJ87ty52tpau93e1tYGUgwcONBms2E7SmcvYkG+Wd3K42Y8sdX27dvlTuSVMsZ69eqFTFnRpwLWWLJkCcrA7OOcw4IOBAJtbW1kXXHOP/jgA2gbM2bMgCE4Y8YMPNmzZ8+VOplg+fF4lq3b7UY+BSH27rvvovHp06fD4nrqqaegrlHeWmlpKVl+/LJenMTFxeKBC2waTNAfWUKkH7Y2E/Y1Fmdw2kDkeO4L7cLifsIEJRTxE5TBk8QUXlNdliAcxI1CnFRxjEbcswvcUIXwZ3HlRE6dtQMwExEWy65du9xu94cffgge79+//6BBg6xW68GDB7/99lvO+ahRo7p16wYkotFoTk4O5rC6upoiGJxzWN8TJ07knJ8/f/7Pf/4zYywxWgKku3XrNnHixFAoNHz4cDwZNmwY9ITS0tLq6moiis1mu/POOxVFqa+v/+CDD6LR6E9+8pPrr7+eWjMRiyWTwrm5uRMnTtR1PRAIvPXWW263G2ocY2zkyJF5eXmcc7/fL1ZJydEiO2Oujh07Rm9BjqVLl2IyH330USyKAwcOmNgHdffs2WNqf9GiRShw3333idj4/f729nZiUhO3mrbCG264QWzTZrMhUnro0CE8mTBhguhrEbdaBFhcLld5eTk1K3b3pz/9yUSm999/PxUmnWVnOFGoKItHOy0WC2QHY6ylpQVLXWR2xhgi5WSrQSpFo1E0CO4GTpB6TGArGpgUBzxRVZVcXiyesw1xZrPZVFWNRqOpUnNYPGZLCXxMyE7XdR0JQxCCNORgMIgpIXeOicomSELEQCAwZ84cu91+/Pjx7du3M8YOHz780ksvcc7z8vLmz58fCoV69uwpy3I0Gn3llVcQeDIMgyIbJvEBVO644w7KOAAhSAJs3rzZSJ3eK8vyDTfcQJnejDFFUV588UXI6Dlz5mDyXnjhBUM4hEMTedNNN40cOdJqtXo8HrHNsrKybdu2YWX89re/5YJr/auvvjp9+jQNxO12//rXv07Mqb0EibszTciePXukjonNGzZsENe5pmlut/moOQ0VtFu0aBGMv0R2wDo9ceJESuTicPDgQbEiBQgLCgrwZNu2banqfvbZZybeRL87duxAAfh7RBg/frzYgsPhoLWZjp3FFYDhqaqK0DXWiMViQQAT3gdyjaiqCrOPp5DfwJi4OHGQDocjVQQCvcRiMehPRtzZg2QgpD9AVoRCIZIVYnVd1yF5mXA8RIqfXUBMlcQOaiHDQnSPIiftChwQsixXVlYuX75cVdXTp0+DZW6//fY777yTMXb27NmZM2dSFVmWi4uLbTZbbW3tkiVLotFoYWHhzJkzSVCGw+ERI0aQsUwdMcaam5sXLVrEGIMVYRJnGPB999130003cc537dq1ZcsWGoaqqi+88EIsFsvJyUGzw4cPX7lypdfrfeutt/76179SIyzugtM0bfny5dXV1Tk5Ob/73e8YYwMGDFixYoXVaq2pqXnssceIl61W65dffml0zNAVG0wCZDvz+J5FyYMs7mtbsmQJSPzQQw+ZqsM+a2pqgl9rzJgxiWxrkhL42tDQQIIicSUCXZIeI0eOFN/abDZxWxcb//3vf0+toRGkxLS0tMC3mpWVFY1GEcMBID6eFAEAJTSlYudLq4NCItgNIfV53PkMLiYrBcsbiUUgIupSjBSML+6JJjAMA0kKUHGTTrKmaejX6XRSNEpRFJ/Ph8NAhLNhGNjfYPPS/s7i7iKLxeL3+xlj+CvLsq7rMGQNwyATRY6fPmSCe4molnQgTLCdpWAwOGnSpPb29pycnPfff9/tdu/evRsrf9u2bYcPHw4GgxMnTty9e7fdbp89e/bhw4ej0ejEiRNVVUXkiDF24sSJsWPHUpstLS2PPPLIgw8+mEgjj8ezc+dOws/lcn388ccIhLI4B61ateq///u/ZVk+evQoFI5Nmzbl5eXJsmy1Wi0Wy8mTJx977LG2trY777zzySefZIxNnToVaVOgjtVq3bhxI+TGxYsXWdzTbrFYPv300/nz59vt9gsXLmAyiExLly4dPXo0+Z4h9y9vOyM/EY6mq6++GgN77733TDXXr1+PV7/4xS9S7QYmeOKJJ0xJCjzBCAUcPHjwshrZ+fPniYs555988gmeQ9lOqgOQJYM2r776ami7b7/9dmL76PTdd981NZIU4STKNhS9aDTqcrk0TXM4HJT2rKqqLMvYIsPhsNVqpUgmVad5o70POeumzGom2GE084ZhWCwWeMxQlySJaYTwWaAuRWxisZjT6SRThLqQZdlisdhsNpErWdwiJrnE4ioEdYQN3TSjPLX77tKhOpfL9cUXX9hstlOnTg0ePFiW5dbWVlSeNm3ak08+6XA4li1b1q9fP8Mwnn/++TVr1qBvm82G5HUxL3jChAkvvviipmnwZifOdiJCkEqGYUyZMuWZZ55JzPrgnOfm5sKtfeONN+LYAWTuO++8079/fxYXZE1NTWvXrr399ttZR9uZMQbvbFtb26hRo06fPu31etevX79gwQKRiBQLS8fCiUSEUo1j7s3NzadPn6bmGGMZGRmQRMFgsLKy0jAMv9+fn59v6lVs1+l09ujRgwaftG/Tc5ptl8uFOIlIfVKbsKDKysrg7MFQ4UYVW2tqakrabzQaxejq6+uR752dnZ2KOmILndITDcOoqKiAG/UnP/kJabYtLS1QHj0eD9YmY+z8+fPnzp0TV6IJ45aWlsrKylAoBA+7yA4iX0iSFIlEzp0753a7Gxoa8vPz29ra4E+VZbmurg60yMvLo1R7zHevXr1SZQFiJZLXmh726NEDzj1Jktrb2zMzM8+ePev1erHhMMYyMzP9fr+mac3NzefPn4/FYnl5eXQePhUFGeu4sSCbfOjQoch3D4fDOKCzfPlyZDiTZoevBIl2pSzLGPbixYvFg8wEtDl888030DHHjh0bjUahu4BAs2bNwhhwSQSP65gQzWmAFCDOOU5Wut3usrIy5LtjUMitAPJY8suWLYNj9O6771YUxWq1lpSUpErESb6xcM6hpoRCITH3hQn3CdCcXPbMnGEYYDexZFLZTCWj0Sg0NSnu/SVNkHJVuWCcpUdARB5/MShFUYz4cUsiDWXsYTXQrJscybwz6cbXX399W1tb37596SHq5OXlDRs2LBXesiyHQqGjR4+K9OrevXufPn2amppwfYUkSadOnYI7dvDgwaLbQlXVG264IRgMIrIsSVJVVVV5ebnT6XS73SNGjNB1Hbyp6/qxY8foJFAaiMVi/fr1w2mkQYMGQeUoLS2tqqqy2WxIm/N6vcOHD7fZbNXV1WVlZYyxysrKI0eOyLKck5MzfPhwVVW//vprSDBcdXJ5sw8OPgC4iXweqbySBNXV1XRYA39F1wjYatKkSejx0KFDIm+iL7Ff5MczxlatWkXPUTIxRT4VbNq0idL7wGTYrPLy8pAuTqrSpk2bKDMPsH37drwqKChgjGVmZnbKi8OEzDYmRNZZfIskR4iIKFYHHDyid5ZzjjtQTFXEZok3JeF2AoDValXiOeuJDphUmoeIMGl5lCKPwyAs7jbGsoKnmRJ60LLoIaaO0lsWHTJld+zYEYlEMjMzb731VlGbO3bsGEKmP/vZz5B4yuNp9Tt27IC7afLkyWQmY9r//Oc/a5o2ZMgQXEdxww03QPp06dIF++M777xj2l4Nw3C73YcPH8bzzz//PBAIQGHEk3HjxjU1NYlE5JzjupJDhw4ZhnHttdf279+/tbUV6gsT1ADeUROsqKg4cOCAzWZrbGycNGmS0+k8cuQIEl0OHDgAZ/6oUaMGDRqUmZl5GZ1RvFwIc3XVVVeRZAV/FRcXo/Dq1atFTtc0De5iZFmIQEl48+fPp5CjyOD19fVpfMWpMD537lxSebJ9+3a09txzz5nECFAVj6XBabJz5060+dBDD6H8kiVLTILvm2++MTV1GXaWJAlxa2Q6GIK/HnqAeG0IAUSh0+mkc2goD19pNBqF+gI2EdcCzvklempNOTpSPPrK4om5WJhiPpCqqohbMcba29tjsRgxrMjXJrem3W6H0LBarcAWfiAWvy+FMQZRyDoKokRIcuFaTU1NcXExOHHy5MkstcmhKMoTTzyBif33f//3SCTSt2/ff/mXf2HJ8jyJKK+88gouF6KUYRF0XR8xYgQcCiweIF23bl1ZWZmiKC+88ILf73c4HI8//riqqpWVlWvWrIH6vXTpUk3Tbr75ZlJmIT3WrVt35swZZHozxurr65csWeJwOL7++mv0fuTIkWXLlqmqSiHMSZMmDRw4kHPetWtX0TuZko6mU6aiBB0zZgx2t2effRZrcO3atSI708KmzJhrrrkGBV577TVUWbhwoahsc8779euXakox/3PmzDFx67hx40QuI2/FwYMH8eSuu+6iwiZlfujQoam6Y8m2SvZ9QqZcMNSxznHslwnZBADidB5Pog0Gg1arNRKJkAJIkyEnXGVHyZymiaWvOMBGX7GBMsFL6vV60QLOEEDO6B1Py1B1dCd1vBFFEgKkTPB94C35isRF3Snbmfru1avXc889Z7Vaz5w5c++99zocDkoNYHEeWbZsGfJfWXxL3bx5s91ur6qquvfee+12+7fffguc/vKXv5w+fVocwPTp05GlKZLP6XR+/vnnS5cuZYzt2bPngQceoAKxWOyee+6ZMWMGDRg3gEUikUAg8Prrr6uqWlZWdv/997e1tT344IN33303yI3yS5curampIYFYVVU1d+5ck1IF6fnAAw9MnDiRMXbgwIGtW7fKsvz73/8eGbdpBCJjHc+x4Jj3kCFDMEW0f7H4ylq7di0kIAxSgqysLFT5+OOPxSpJ87iQ/JoIqJtUI/v73/8ulsQJfsZYYWHh/3DWm2+i5NNPP51455gIFy5cSMwdRqfPP/88ysCHxhiDGXZZ2/kSxtQu4jiMsUgkkmjr4KvD4RB3TwQwUUXcUklVFgsHg0GTMwIbLvLtRL1Xiiesh0IhcTDBYBA2qN1uR91oNCrq0qKSbMRjPqTrEBcT4CsFOUBlSg9LpyEyxlJdpEGRmsT+0OLq1avJLcY5RzoH67iF4fNvfvObWbNmUW6jLMsLFiwoLy9HFzgpiiCnSYUWP/z6178GlwA8Hs/HH38sSZLb7caSvO222w4fPuzxeDZv3lxUVNTe3v7yyy+PHz+eBqJp2l133XX27NkePXp88cUXiTJO13VK0HjppZeWLFnCGJs/f/65c+eys7Pff//9NC6P5Lk4pq8mOhqGAfetCQmW4MXknHfv3h0+Z4KKiorjx4/TV0qkSwPl5eXiV4/HU1RURKPinPv9foTxeDyloqGhQVwBuq7DAREMBmFBJQXwbM+ePaGZl5eXf/PNNxcuXBC3oMRayS9cu/Q6Lj4kSaKcm0TljsUvDRDjroix0M2GeC5Jks1mo+Ak/CvY4lMJb3gHxLcZGRlkm0Pbh68B8RzoCWBkijHEYjGo/Xa7XdO0NLYwBoIFTlVSFf4fKtEnkcb4fMstt+DGGtAuIyNj7ty52dnZqcw1EALY33XXXS+//LLD4fjP//xPSlgHIN7v9XqPHTsGLBMREB/qur5161YorXhSW1vbv3//lpaWn/70p7t27ZJl+a9//ev06dM1TXvqqacuXrzocDhmzJgxc+ZMQlVRFATHy8vLe/funerYLhh/y5Ytt912m0jWVOiZiUjlSLOz2+2mSYhGoxSnTwVoRFVVOnDR0tKSWIxzjlMFrKPjVhYOT5GmkpWVRccR0HhdXV0kEqHMz1Ao1NjYCBbxer2KooRCIROqaE3XdYoHpAJo8iQ3Lxsc7sDOHo9HlmWn08njZ1/og2EYuMkG2T1J2wI7w7rCnkjamWEYHo8HUqylpQULobGxETcEIiyBDxAC7e3tjDGn02m322Ed0q7NOYcPnDGmKEpzc7PVajUMw+fzwb5CAB29Y1AmacDiuZN0IkEkNOc8Eom0trbquo7xYk9L3IsuQfz6gmZoNohCiP4PERB4SXoPKwTfvn37MLwpU6bgyTPPPAP5smnTJrhC4SVGEIMxNnDgQMhN3JXGhSuiV65cCXxMR19wrAcmMwTC/fffj7oLFy5E5AROScbY3r17TaiipHhc1kRHpFeoqnr06FGEfUhDSqon0kq8dIMyohBJxTxJveQTEneWwC404md8sUKRAYCAOjgL+zL2K8TRUYVyNuhvohdAil/5TKoolSH9lFYr1D0jfm0C8YdJ8ZDivh/K4qXcI96ZY2nY4CoqKlJRJw1wzlVVRWBaUZSePXsahmG32ysrK7EW8vPzdV2nK3MDgUCvXr045xUVFab0fGDpcDjy8/NBoIqKCsMwcnNzqToAbbK42iDakTRa+oumKisrY7GY1Wrt3r273DGTETggZCpJ0oULF9ra2kSBdhnLT3TKinvlFUFWVhbWPC31119/Ha/E20hEjggGg9BI+vTpYxIaVJ5uI/nb3/6mC9cd8GQAC49ufGcJqXVdu3Zl8RgL2Fk0bBhjf/jDH9AUWd9ffvmlKZ8+PTszKZ4Om06CJgPDMGAFsniKHiIbcAURc9GoeNx7asTjomJrmHM0gqWt6zpml5YqfWAJmkfiHkI9Qt1Jo5DC40thGRYPzF6WIGY90TCM7OzsKVOmJNWoTSBJ0po1a+gGTlmWz5w5s337dlVVm5ubZ8+ejT199erVXNDkJ0+e3K1bN7vdPmvWrGAwmJubS1jSX0IaFbds2VJSUmJCKRqN5ubmTpo0SVGUEydO7Nq1y+PxIEM7EVWr1frII49cvHgxJycnkSKo8vHHH7vdbkmScBhPkqRXX301JyfHZrM99NBDl098F6/+Gzp0aFJ+SQqI7dLVfx988AGavf/++1EA3i0REDIVWUNUBkTenDFjhhy/8CQp9O/fH6yzadMmcWrFD4mXC6FxkZ1Zxww31nGBu93uzoZMCSKRCMIUrKMJmNiH+JsMhAoYUFEUsAa4UlyJ4E1RAZAEj6nYI+W9JTqTQHQsHMYYfr+DtgJx36CLTUwSQKQaEBCXP4/vzpxzuu46FaS8yVNRlGPHjq1cuTJxIYTD4Xnz5hUWFiZtGth/8sknjz32mNVq/eSTT0yELi4uhv8xDVqg9d69e1Fs7ty5BQUFtB0Hg8F58+YZhnHmzJlHHnkEl5WtWbMGHRmG4fV6X3755U8//ZRzvnz58tzcXBON4HLG11GjRv3qV79yOByvvfbarl27RMQWLVrUvXt3+M/TicWkN3mCR8jTmQi4PwRJXyzhJs8r2pfSA5oCOQjgaxB7ufvuu01yZurUqekSPxhj8ZU+c+ZMkjzispAkqaKiAq+SKgbpbvKkD0mXMczP9PlEPP77J6zjpXzUQqKzw9S1qbXGxkYxdbW+vp4UTBhwqqrq8YNkhmEg/snj211S8hF/tLe3RyIRq9WaeOVkY2Mjro3obMg06aSRdEhfLBG/W2655be//a3T6Vy/fv2mTZvERkxtXnXVVatWrXK73YcOHZo/fz71wjmfNWvWhAkTwuEw3QSP5263++2337bZbKWlpTiWhjZVVX311VdfffVVwzAmTpw4depURVHmzp375Zdfij3Cshg+fPizzz4bCoVw+TBLcRKEpvzyFssPDt26dcN1oAcOHEjVPZ7bbDb4nSB3uJALWlRUhFtAWcdgpNPpxG2cibL1+PHj+/btY4xNnz4dCMBZmwhZWVljxozB5/QX2olYJS1wifbpJf2VAgVqKK0gETN8oKNulMVAyMDzSgfSeDwvQ4onOiXeSI5L4sVmU6VSwhuCxkkVMRFBnLkrY+fvuS2gs927dw8bNkxRlNra2qR6e2Zm5u7du+mKYV3Xr7vuutLSUhqPy+VatWpVUVGRYRgbN2786U9/ahjGhAkTysvLwX3hcLiwsBA3Zu3evbuoqAgH5EC7xYsX4y6jxFRoGqYonQ3DmDlz5pQpU8ThI5PvMobzZa/NTySoGANIihnK1NTU1NTUpC9TWFgIbxh2PZ/Ph5tDCILB4MmTJ1ncGS7L8okTJ86ePUsFEGxhjPl8vlOnToldmMIyrOMq4Qk/DcE5z83Nzc3NNZECJgAVTrrC0l2bL8uySZNgcamcNKCMt06nU0QXXkKxDM5w4oAoxSQlIbII3yJ+hAEJDoZhwLiEUg03YiwWc7vdlGaFHBi4/0QRRns0jQXOLhwEE5V8xCw55/CophpUEkgM3hcWFsIwCofD9fX1jQlQX1+PIZn0RMMwwuFwQ0MDiuEe+6eeesrU/Z49e1paWhoaGkxxcSMea1+7dq3T6fT7/XQhlNfr9fl8fr8fvN+lS5fq6ur6+npcAABMamtrOefz5s1LOlqXy3Xs2LHm5mbgH41Gt2/f7vF4MjIycLG/JEk4uco5nzJlisvlwiuv19uvX78ruFyIPhvxA3CpftWEc07HwMTnVquVYlJ4hZADFYM5AXONC7EHeqsoiqZpwWAQWhvUDorSSPFjjF6vl+I/WEToF8vNpNCgnYyMDLrdiDHmdDpNR1/gWELIAfEJAHkIUy3G5L+Whh+ru+wOY9IMOOeapiHg63A4fD4f3PRZWVki+zc3NyOSi9PK0Wi0urqa/LK4eRuE8Pv9brfbtC9JkuR2uy9evIgAQ1ZWFiaJXHCmwripC7/3CdMe+CiKkpubi2yspqYmXdc1TUNqPs1ut27dcDyVRE1ymiSm1l02uCUCqENm3969e/HkgQceiMZ/io93BPyGVmZmJi5C+vrrrxNtGDSyevXqpC7YmpoaLMNrr72WZEIqp+xHH33EOW9vb8dPIOJ3+0i54Zxv2LBBPOfH4pEDWZaRyUWNd8qLA5nN00ZRkoIY3pXjeedSPJphYi4o1WJaQKInFZpgqlAPUVlJ+AUJjJ8sEEQKuXCPphL/3UkWlx5c8GbSwHk8NGTED72k2pqZSU/s06dPet09Kei6ju2FMWa32wsKCqLRKA7MJdWwcnNzCwsL6WdSVFU15ZkAIpGISeMhUBQFCwqGrQh+v7+goICkh67rCEJIktSjRw+73Z6bm2uihdvtptvoCUAyypUWHybiI7n3n2GMbSgITOpqvlfkigArXEQF7gBTx+LXdFImWfk0VVBM7/hDBWkaEU2U9GyXZgFuq2n715N1zLSxkC/2OwCFJcnrlxjNAEKQLyhAVZLSRYnf+SPquhg56XFiMisxoKghUiN0NEVkYVOVxEF1ZuwdZGK6MELnQIr/ME0q4EIOL4vTJX2VxJXIUg8vzcYoVhG54Ur30iQYgp1/hO8D32sGfgTAj0T8AeBHIv4A8CMRfwD4P81hxPg6pIQtAAAAAElFTkSuQmCC"
+            alt="QR Code LinkedIn — Audrey Kwekeu"
+            class="qr-code"
+          >
+          <span class="qr-label">LinkedIn</span>
+        </div>
+      </div>
+      
+
+      
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">Langues</div>
+        
+        <div class="sidebar-bullet">Français — Natif</div>
+        
+        <div class="sidebar-bullet">Anglais — B2 (TOEIC : 865/990)</div>
+        
+      </div>
+      
+
+      
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">Normes &amp; Réglementation</div>
+        
+        <div class="sidebar-bullet">Règlement UE 2017/745</div>
+        
+        <div class="sidebar-bullet">Règlement UE 2017/746</div>
+        
+        <div class="sidebar-bullet">BPF</div>
+        
+        <div class="sidebar-bullet">FDA</div>
+        
+        <div class="sidebar-bullet">MDSAP</div>
+        
+        <div class="sidebar-bullet">IA Act</div>
+        
+        <div class="sidebar-bullet">ISO 13485</div>
+        
+        <div class="sidebar-bullet">ISO 62304</div>
+        
+        <div class="sidebar-bullet">ISO 14971</div>
+        
+        <div class="sidebar-bullet">ISO 62366</div>
+        
+        <div class="sidebar-bullet">ISO 10993</div>
+        
+      </div>
+      
+
+      
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">Compétences</div>
+        
+        <div class="sidebar-bullet">Python</div>
+        
+        <div class="sidebar-bullet">LabVIEW</div>
+        
+        <div class="sidebar-bullet">C / MATLAB</div>
+        
+        <div class="sidebar-bullet">Java / PHP / MySQL</div>
+        
+        <div class="sidebar-bullet">FPGA</div>
+        
+        <div class="sidebar-bullet">MS Project</div>
+        
+        <div class="sidebar-bullet">Excel VBA</div>
+        
+        <div class="sidebar-bullet">Gestion de projet</div>
+        
+        <div class="sidebar-bullet">AMM</div>
+        
+      </div>
+      
+
+      
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">Savoir-faire</div>
+        
+        <div class="sidebar-bullet">Travail en équipe</div>
+        
+        <div class="sidebar-bullet">Organisation</div>
+        
+        <div class="sidebar-bullet">Adaptabilité</div>
+        
+        <div class="sidebar-bullet">Autonomie</div>
+        
+        <div class="sidebar-bullet">Rigueur</div>
+        
+      </div>
+      
+
+      
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">Centres d'intérêt</div>
+        
+        <div class="sidebar-bullet">Associations étudiantes</div>
+        
+        <div class="sidebar-bullet">Chorale</div>
+        
+        <div class="sidebar-bullet">Écriture de poésie</div>
+        
+        <div class="sidebar-bullet">Course à pied</div>
+        
+        <div class="sidebar-bullet">Voyage</div>
+        
+      </div>
+      
+
+    </aside>
+
+    
+    <main class="main-content">
+
+      
+      <header class="identity-banner">
+        <div class="cv-name">Audrey Kwekeu</div>
+        <div class="cv-job-title">Ingénieure Qualité &amp; Affaires Réglementaires</div>
+        <div class="cv-objective">Recherche active d&#39;un poste en CDD ou CDI — Secteur biomédical, pharmaceutique ou dispositifs médicaux</div>
+      </header>
+
+      
+      <div class="main-body">
+
+        
+        
+        <section class="section">
+          <div class="section-title">Expériences</div>
+          
+          <div class="experience-entry no-break">
+            <div class="experience-header">
+              <span class="experience-date">Sept. 2024 — Août 2025</span>
+              <span class="experience-role">Chargée qualité &amp; affaires réglementaires</span>
+            </div>
+            <div class="experience-organization">CELLAVISION RAL DIAGNOSTICS — Martillac, France</div>
+            <ul class="experience-missions">
+              
+              <li>Mise en place de la certification MDSAP au sein de l&#39;entreprise</li>
+              
+              <li>Gestion des enregistrements et du maintien des autorisations de mise sur le marché (AMM) en France et dans les pays d&#39;exportation</li>
+              
+              <li>Conseil et assistance sur les aspects réglementaires auprès des services concernés (R&amp;D, Production, Qualité, Marketing, Ventes)</li>
+              
+              <li>Réalisation ou mise à jour des dossiers techniques</li>
+              
+              <li>Participation à l&#39;analyse et l&#39;évaluation des risques liés aux produits CE</li>
+              
+              <li>Veille réglementaire et normative</li>
+              
+            </ul>
+          </div>
+          
+          <div class="experience-entry no-break">
+            <div class="experience-header">
+              <span class="experience-date">Avril 2024 — Août 2024</span>
+              <span class="experience-role">Ingénieur R&amp;D</span>
+            </div>
+            <div class="experience-organization">CINAM — Marseille, France</div>
+            <ul class="experience-missions">
+              
+              <li>Modélisation de la génération de gouttes en microfluidique pour des applications biomédicales</li>
+              
+              <li>Conception, développement et évaluation de dispositifs médicaux innovants en intégrant les dernières avancées technologiques</li>
+              
+            </ul>
+          </div>
+          
+          <div class="experience-entry no-break">
+            <div class="experience-header">
+              <span class="experience-date">Juin 2023 — Août 2023</span>
+              <span class="experience-role">Ingénieur d&#39;Application</span>
+            </div>
+            <div class="experience-organization">T2S GROUP — Casablanca, Maroc</div>
+            <ul class="experience-missions">
+              
+              <li>Adaptation et mise en œuvre de solutions biomédicales innovantes pour répondre aux besoins spécifiques des clients (IRM, Scanners)</li>
+              
+              <li>Installation et formation à l&#39;utilisation des équipements</li>
+              
+              <li>Maintenance et bon fonctionnement via le service après-vente</li>
+              
+            </ul>
+          </div>
+          
+          <div class="experience-entry no-break">
+            <div class="experience-header">
+              <span class="experience-date">Juin 2022 — Août 2022</span>
+              <span class="experience-role">Ingénieur biomédical</span>
+            </div>
+            <div class="experience-organization">Hôpital Ibn Sina — Rabat, Maroc</div>
+            <ul class="experience-missions">
+              
+              <li>Élaboration des cahiers des charges pour l&#39;achat de nouveaux équipements</li>
+              
+              <li>Gestion et surveillance des équipements médicaux, suivies de la coordination avec les fournisseurs</li>
+              
+              <li>Formation du personnel médical à l&#39;utilisation des équipements, ainsi que le respect des normes de sécurité et de réglementation dans le cadre hospitalier</li>
+              
+            </ul>
+          </div>
+          
+        </section>
+        
+
+        
+        
+        <section class="section">
+          <div class="section-title">Formations</div>
+          
+          <div class="education-entry no-break">
+            <span class="education-year">2024 – 2025</span>
+            <span class="education-institution">UTC — Compiègne</span>
+            <span class="education-degree">Master 2 spécialisé — Dispositifs médicaux &amp; affaires réglementaires</span>
+          </div>
+          
+          <div class="education-entry no-break">
+            <span class="education-year">2023 – 2024</span>
+            <span class="education-institution">Polytech — Marseille</span>
+            <span class="education-degree">Génie biomédical — Instrumentation biomédicale</span>
+          </div>
+          
+          <div class="education-entry no-break">
+            <span class="education-year">2021 – 2023</span>
+            <span class="education-institution">ENSAM — Rabat</span>
+            <span class="education-degree">Génie biomédical — Instrumentation biomédicale</span>
+          </div>
+          
+          <div class="education-entry no-break">
+            <span class="education-year">2019 – 2021</span>
+            <span class="education-institution">Al Khansaa — Casablanca</span>
+            <span class="education-degree">Classes préparatoires aux grandes écoles — Option Mathématiques–Physique</span>
+          </div>
+          
+        </section>
+        
+
+        
+        
+        <section class="section">
+          <div class="section-title">Projets</div>
+          
+          <div class="project-entry no-break">
+            <span class="project-year">2024 – 2025</span>
+            <span class="project-title">Mise en conformité des dispositifs médicaux de diagnostic in vitro avec le règlement UE 2017/746</span>
+          </div>
+          
+          <div class="project-entry no-break">
+            <span class="project-year">2023 – 2024</span>
+            <span class="project-title">Centre de maintenance biomédicale à Kinshasa et développement d&#39;une solution de GMAO</span>
+          </div>
+          
+          <div class="project-entry no-break">
+            <span class="project-year">2022 – 2023</span>
+            <span class="project-title">Application de gestion d&#39;ambulances</span>
+          </div>
+          
+        </section>
+        
+
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

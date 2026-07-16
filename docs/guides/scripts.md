@@ -113,7 +113,7 @@ It reports errors for invalid YAML shape, unknown explicit providers, malformed 
 ```bash
 npm run validate:portals
 npm run validate:portals -- --file templates/portals.example.yml
-node validate-portals.mjs --self-test
+node scripts/js/validate-portals.mjs --self-test
 ```
 
 **Exit codes:** `0` no errors (warnings allowed), `1` one or more errors found.
@@ -141,7 +141,7 @@ Converts a single screenshot or image (PNG, JPEG, GIF, WEBP, BMP, SVG) into a si
 ```bash
 npm run img-to-pdf -- screenshot.png output.pdf
 npm run img-to-pdf -- screenshot.png output.pdf --force   # overwrite an existing output file
-node img-to-pdf.mjs --self-test
+node scripts/js/img-to-pdf.mjs --self-test
 ```
 
 MVP scope: one image in, one PDF page out. Multi-image/multi-page conversion is not implemented.
@@ -155,8 +155,8 @@ MVP scope: one image in, one PDF page out. Multi-image/multi-page conversion is 
 Builds a `.tex` file from a structured JSON payload, handling template merge and LaTeX escaping automatically. The JSON is produced by the agent during evaluation — this script replaces the manual LaTeX generation step in `modes/latex.md`.
 
 ```bash
-node build-cv-latex.mjs input.json output.tex
-node build-cv-latex.mjs --test
+node scripts/js/build-cv-latex.mjs input.json output.tex
+node scripts/js/build-cv-latex.mjs --test
 ```
 
 **Exit codes:** `0` file generated, `1` missing inputs, invalid JSON, unresolved placeholders, or template not found.
@@ -183,7 +183,7 @@ Analyzes application outcomes, scores, archetypes, blockers, remote policy, and 
 npm run patterns
 npm run patterns -- --summary
 npm run patterns -- --min-threshold 3
-node analyze-patterns.mjs --self-test
+node scripts/js/analyze-patterns.mjs --self-test
 ```
 
 **Exit codes:** `0` analysis succeeded, `1` insufficient data or parser self-test failure.
@@ -198,9 +198,9 @@ Aggregates skill gaps across every tracked report (#1520, phase 1). Extracts ski
 npm run upskill
 npm run upskill -- --summary
 npm run upskill -- --min-reports 3
-node upskill.mjs --url-text https://boards.greenhouse.io/acme/jobs/123   # targeted: gaps for one JD
-node upskill.mjs --url-text ./jds/my-job.txt                            # targeted: --url-text also takes a local file
-node upskill.mjs --self-test
+node scripts/js/upskill.mjs --url-text https://boards.greenhouse.io/acme/jobs/123   # targeted: gaps for one JD
+node scripts/js/upskill.mjs --url-text ./jds/my-job.txt                            # targeted: --url-text also takes a local file
+node scripts/js/upskill.mjs --self-test
 ```
 
 **Exit codes:** `0` analysis succeeded (including graceful `{error}` JSON for insufficient data), `1` self-test failure.
@@ -212,9 +212,9 @@ node upskill.mjs --self-test
 Folds compensation observations into per-application desired/advertised/actual values and gap aggregates. Sources: `reports/*.md` Machine Summary `advertised_comp` (advertised, source `jd` — historical reports backfill automatically), `data/salary-observations.tsv` (desired/actual, append-only), and `config/profile.yml` `compensation.target_range` (desired default). Fold precedence: highest trust tier wins, then latest date (`actual`: contract > offer-letter > recruiter-verbal > user). Aggregates group by (company, role) and per currency — no FX conversion. Unparseable amounts, orphaned tracker numbers, sample sizes, and staleness are always reported.
 
 ```bash
-node salary-gap.mjs             # JSON
-node salary-gap.mjs --summary   # table + data-quality section
-node salary-gap.mjs --self-test
+node scripts/js/salary-gap.mjs             # JSON
+node scripts/js/salary-gap.mjs --summary   # table + data-quality section
+node scripts/js/salary-gap.mjs --self-test
 ```
 
 Observation line format (TSV, one per line, `#`-prefixed lines are comments):
@@ -236,10 +236,10 @@ Funnel calibration vs market benchmarks + stage velocity. Three payloads, decrea
 Statistical honesty is enforced in code: right-censored counts printed next to every median ("n still waiting, excluded"), same-day catch-up hops excluded and counted, no comparative multiplier claims below n=20 applied, above-range output carries a selection-bias note, every benchmark mention carries its year + "directional". Coverage, orphaned tracker numbers, unparseable lines, and unknown sources are always reported.
 
 ```bash
-node funnel-velocity.mjs             # JSON
-node funnel-velocity.mjs --summary   # human-readable
-node funnel-velocity.mjs --self-test
-node funnel-velocity.mjs --benchmarks path/to/benchmarks.yml
+node scripts/js/funnel-velocity.mjs             # JSON
+node scripts/js/funnel-velocity.mjs --summary   # human-readable
+node scripts/js/funnel-velocity.mjs --self-test
+node scripts/js/funnel-velocity.mjs --benchmarks path/to/benchmarks.yml
 ```
 
 Ledger line format (TSV, appended by `set-status.mjs`, `#`-prefixed lines are comments):
@@ -259,10 +259,10 @@ Ledger line format (TSV, appended by `set-status.mjs`, `#`-prefixed lines are co
 Logs "received a skills assessment" as a structured per-application event (eSkill, HackerRank, Criteria, Predictive Index, ...) instead of burying it in free-text notes. Each event records platform, subject tested, pass threshold vs score achieved (both optional — vendors often hide them), and a candidate-observed staleness note (e.g. "test content references Adobe Acrobat 9, a 2008-era version"; empty = no staleness observed). Events append to `data/assessments.tsv` (user layer, created on first `add`, never rewritten). Aggregates count events, pass/fail (only when both threshold and score are known), and stale-flagged events per platform; malformed lines are always reported, never dropped silently.
 
 ```bash
-node assessment-log.mjs add --company Acme --report 042 --platform eSkill --subject "MS Office" --threshold 70 --score 92 --stale "references Adobe Acrobat 9 (2008-era)"
-node assessment-log.mjs             # JSON
-node assessment-log.mjs --summary   # per-event + per-platform table
-node assessment-log.mjs --self-test
+node scripts/js/assessment-log.mjs add --company Acme --report 042 --platform eSkill --subject "MS Office" --threshold 70 --score 92 --stale "references Adobe Acrobat 9 (2008-era)"
+node scripts/js/assessment-log.mjs             # JSON
+node scripts/js/assessment-log.mjs --summary   # per-event + per-platform table
+node scripts/js/assessment-log.mjs --self-test
 ```
 
 Log line format (TSV, one per line, `#`-prefixed lines are comments; for `report#`, `threshold%`, and `score%`, `-` or an absent trailing cell = unknown; an empty `stale_note` means no staleness was observed, not unknown):
@@ -361,7 +361,7 @@ When the ATS provider's list API returns a description, each new offer is finger
 
 ```bash
 npm run scan
-node scan.mjs --include-blacklisted   # audit: let blacklisted companies through, annotated
+node scripts/js/scan.mjs --include-blacklisted   # audit: let blacklisted companies through, annotated
 ```
 
 **Exit codes:** `0` scan completed, `1` configuration error or no portals.yml found.
@@ -390,12 +390,12 @@ Same detection logic applies to `scan.mjs` (the standard portal scanner) — the
 
 ```bash
 npm run scan:full                              # all ATS directories, last 3 days
-node scan-ats-full.mjs --since 7               # postings from the last 7 days
-node scan-ats-full.mjs --ats greenhouse,workday # subset of sources
-node scan-ats-full.mjs --limit 200             # max companies per ATS
-node scan-ats-full.mjs --dry-run               # preview without writing
-node scan-ats-full.mjs --liveness              # Playwright-verify matches first
-node scan-ats-full.mjs --md-out notes/scans    # also write a dated markdown digest
+node scripts/js/scan-ats-full.mjs --since 7               # postings from the last 7 days
+node scripts/js/scan-ats-full.mjs --ats greenhouse,workday # subset of sources
+node scripts/js/scan-ats-full.mjs --limit 200             # max companies per ATS
+node scripts/js/scan-ats-full.mjs --dry-run               # preview without writing
+node scripts/js/scan-ats-full.mjs --liveness              # Playwright-verify matches first
+node scripts/js/scan-ats-full.mjs --md-out notes/scans    # also write a dated markdown digest
 ```
 
 **Exit codes:** `0` scan completed, `1` configuration error (no portals.yml, unknown `--ats` source) or fatal scan error.
@@ -411,13 +411,13 @@ Why: at hundreds of rows a markdown table degrades structurally (encoding corrup
 Zero new dependencies — uses `node:sqlite`, built into Node ≥ 22.5.
 
 ```bash
-node tracker.mjs sync                     # (re)build applications.db from applications.md
-node tracker.mjs sync --check             # diagnose corruption only, no write (exit 1 if issues found)
-node tracker.mjs query --status Applied --since 2026-05-01
-node tracker.mjs query --company acme --json
-node tracker.mjs history --id 42          # status transitions observed across syncs (Applied → Interview → ...)
-node tracker.mjs export                   # inverse: index → canonical markdown table on stdout
-node tracker.mjs export --out repaired.md # write to a file (existing file backed up to .bak first)
+node scripts/js/tracker.mjs sync                     # (re)build applications.db from applications.md
+node scripts/js/tracker.mjs sync --check             # diagnose corruption only, no write (exit 1 if issues found)
+node scripts/js/tracker.mjs query --status Applied --since 2026-05-01
+node scripts/js/tracker.mjs query --company acme --json
+node scripts/js/tracker.mjs history --id 42          # status transitions observed across syncs (Applied → Interview → ...)
+node scripts/js/tracker.mjs export                   # inverse: index → canonical markdown table on stdout
+node scripts/js/tracker.mjs export --out repaired.md # write to a file (existing file backed up to .bak first)
 ```
 
 `query` and `history` auto-resync when the markdown changed since the last sync, so the index can never serve stale reads.
@@ -437,10 +437,10 @@ Resolves a report number, tracker number, or company/role fragment to its full p
 Zero dependencies, strictly read-only. Numeric queries match **both** the tracker # column and the report number from the Report link (`012` and `12` are the same number), so collisions between the two numbering schemes surface as multiple rows instead of a silent wrong pick. Text queries match company/role by case-insensitive substring, with the shared fuzzy matcher (`role-matcher.mjs`) as fallback for multi-word phrases.
 
 ```bash
-node find.mjs 13                # report# OR tracker# 13 — shows both if they differ
-node find.mjs acme              # company fragment
-node find.mjs "data engineer"   # role phrase (fuzzy via role-matcher)
-node find.mjs acme --json       # machine-readable output
+node scripts/js/find.mjs 13                # report# OR tracker# 13 — shows both if they differ
+node scripts/js/find.mjs acme              # company fragment
+node scripts/js/find.mjs "data engineer"   # role phrase (fuzzy via role-matcher)
+node scripts/js/find.mjs acme --json       # machine-readable output
 ```
 
 Multiple matches print as a table; zero matches print a clean message.
@@ -455,7 +455,7 @@ Manual, no-Gmail input path into `reply-watch.mjs`'s classification pipeline (#1
 
 ```bash
 npm run paste-reply                    # interactive: prompts for subject, from, body
-node paste-reply.mjs --file email.txt  # read subject/from/body from a file
+node scripts/js/paste-reply.mjs --file email.txt  # read subject/from/body from a file
 ```
 
 `--file` format (header lines optional, blank line separates headers from body):
@@ -467,7 +467,7 @@ From: <sender>
 <body text...>
 ```
 
-If no `Subject:`/`From:` header lines are found, the whole file is treated as the body. After appending, run `node reply-watch.mjs` to classify the new candidate and review suggested tracker updates.
+If no `Subject:`/`From:` header lines are found, the whole file is treated as the body. After appending, run `node scripts/js/reply-watch.mjs` to classify the new candidate and review suggested tracker updates.
 
 **Exit codes:** `0` candidate appended, `1` missing `--file` argument, input file not found, or no subject/body text found.
 
@@ -478,8 +478,8 @@ If no `Subject:`/`From:` header lines are found, the whole file is treated as th
 Aggregates lifetime pipeline stats into one JSON report. Stats include tracker, scanner, portals, follow-ups and runs. Reads from data/applications.md, data/scan-history.tsv, portals.yml, data/follow-ups.md and data/scan-runs.tsv. If a file doesn't exist yet, the section turns into null.
 
 ```bash
-node stats.mjs --summary             # returns human-readable table
-node stats.mjs                       # returns json
+node scripts/js/stats.mjs --summary             # returns human-readable table
+node scripts/js/stats.mjs                       # returns json
 ```
 On a fresh clone, with no data yet, the JSON format is as follows:
 

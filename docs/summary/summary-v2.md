@@ -1,0 +1,135 @@
+Let me update the summary based on the full conversation history, preserving what's still true and removing/completing what's stale.
+Objective
+- Build a full Skills Portfolio feature for career-ops: backend models/services/endpoints, frontend CRUD + LLM-assisted features, separate listing pages for competencies, experiences, and education.
+- Bridge the skills portfolio to the CV generator pipeline: convert portfolio data into CVData format, generate cv.md, and add "Générer CV" button in the frontend.
+- Build a profile management system with multi-profile support (YAML variants), full UI editor, and list page — replacing the lack of any profile editing UI.
+- Add LLM-powered extraction from free text for profile, experiences, education, and portals — allowing users to paste CVs, transcripts, or career descriptions to auto-fill data.
+- Add portal scanner configuration extraction from URLs/text with ATS platform auto-detection.
+Important Details
+- LLM provider configured as OpenAI (gpt-4o-mini) via backend/.env with python-dotenv loaded in manage.py
+- fetchJson throws on {"error": ...} bodies even with HTTP 200; fetchJsonSafe variant created for LLM calls that displays errors inline
+- Experience model has many-to-many with competencies via experiences field; serializer includes competencies_count
+- Competency model requires at least one evidence item before validation
+- DB seeded with 1 experience, 8 competencies (1 validated with evidence, 1 rejected)
+- French UI throughout (labels, placeholders, status names)
+- Education module added as extension of skills_portfolio (not a separate app)
+- gradlew binary is missing — must use backend/.venv/bin/python directly for Django and npx tsc for TypeScript
+- djangoShellJson error handling: try/catch returning {error: msg}
+- LLM date issue fixed with _normalize_date() padding partial dates
+- config/profile.yml is the single source of truth for candidate personal data (YAML-based, not DB)
+- Multi-profile architecture: YAML variants in config/profiles/*.yml that override part of the base profile; deep-merge at runtime
+- ProfileView + ProfileVariantView in Django handle read/write of profile and variants
+- export_to_cvdata(variant) and generate_cv_markdown(variant) accept optional variant parameter for profile resolution
+- exports._load_profile(variant) does deep-merge of base + variant via _deep_merge()
+- Proxy endpoints export/cvdata and export/cv-markdown accept ?variant= query param
+- Profile editor uses full-width layout with sidebar (complétude, variant selector, CV preview) + collapsible form sections
+- Profile list page (/profile/list) shows base profile card + variant cards with edit/duplicate/delete actions
+- portals.yml bridge: apply_discovery_to_portals() in integration.py merges discovery keywords into title_filter.positive; requires portals.yml to exist first
+- Active variant persisted in localStorage (profile_active_variant key) so it survives page refresh
+- Override chips on variant list page: dot + label per overridden field (e.g., ● Identité, ● Narrative)
+- LLMClient.complete_json() now has _extract_json() fallback: regex-based JSON extraction from surrounding text when strict json.loads fails
+- Portal extraction detects ATS platforms (Greenhouse, Ashby, Lever, Workday, SmartRecruiters, Teamtailor) from URLs; Greenhouse auto-generates boards-api.greenhouse.io API endpoint; branded career URLs (e.g., mistral.ai/careers) correctly detected as needing scan_method: websearch
+- portals.yml was created by copying templates/portals.example.yml to project root
+- Node.js piped-stdout buffering: When stdout is piped (not a TTY), Node.js uses full buffering. console.log output sits in a buffer that only flushes when full or process exits. If the process is killed by timeout before the buffer fills, all output is lost. Workaround: redirect to a temp file via bash -c.
+- Verify script performance: verify-portals.mjs takes 60-90s for 115 companies (HTTP requests per company). Serverless function has 120s maxDuration limit.
+- Health cache format: { data: { available, configured, companies: [...] }, ts: number } in localStorage key portals_health_cache with 1-hour TTL.
+- Hero pattern: section.relative.isolate.overflow-hidden with dot-bg background, brand blur blob (-right-32 -top-40 h-96 w-96), instrumentSerif title (text-5xl md:text-7xl), badge chip, right-aligned action buttons.
+- career-ops update: v1.19.0 → v1.20.0 applied (223 system paths, includes CareerOps Manifesto).
+- Per-field override detection: computeOverriddenFields() returns Map<section, fieldLabels[]> using FIELD_LABELS mapping; computeOverriddenSections() returns Set<string> via JSON.stringify comparison. Both used in profile editor.
+- Portals list grid/list toggle: viewMode state ("grid" | "list"), grid uses 3-column card layout (xl:grid-cols-3), list uses compact table with columns: Entreprise, ATS, Détail, Notes, Action.
+Work State
+Completed
+- Backend: all models (SkillExperience, SkillCompetency, SkillEvidence, Education, EducationCompetency, SkillExtractionRun), serializers, views, URLs, services
+- Backend tests: 159 passing across all test files
+- Education backend: CRUD, attach/detach competency, LLM extraction, extract_education_from_text() + persist_extracted_educations()
+- Experience LLM extraction: EXPERIENCE_EXTRACTION_SYSTEM, extract_experiences_from_text() + persist_extracted_experiences(), ExtractExperienceView
+- Date normalization: _normalize_date() + EducationSerializer.to_internal_value() padding
+- djangoShellJson error handling fixed
+- Frontend: all 4 pages (/skills, /skills/list, /skills/experiences, /skills/education) with nav links
+- export_to_cvdata() — maps portfolio + profile → CVData JSON
+- format_experience_section(), format_education_section(), format_skills_section() markdown formatters
+- generate_cv_markdown() — assembles full CV from identity + experiences + education + competencies + languages + interests
+- "Générer CV" panel in skills-portfolio-view.tsx — buttons for CV Markdown + CV Data (JSON) + download
+- Discovery → portals.yml bridge (apply_discovery_to_portals() in integration.py + POST /api/skills/integration/apply-discovery proxy)
+- config/profile.yml extended with languages, interests, regulations
+- Proxy endpoints for export/cvdata, export/cv-markdown in route.ts (djangoShellJson with variant support)
+- ProfileView + ProfileVariantView in apps/portals/views.py — full CRUD for profile + variants
+- Routes: api/profile, api/profile/variants, api/profile/variants/<name> in config/urls.py
+- apps/portals/views.py: _load_profile_raw(), _save_profile_raw(), _list_variants(), _load_variant(), _save_variant(), _resolve_profile()
+- exports.py: _load_profile(variant), _deep_merge(), export_to_cvdata(variant), generate_cv_markdown(variant)
+- components/profile-editor.tsx — full-width layout with sidebar + 7 collapsible form sections, per-field override chips, localStorage variant persistence
+- components/profile-list-view.tsx — grid of base profile card + variant cards with edit/duplicate/delete, override dots
+- app/profile/page.tsx + app/profile/list/page.tsx — route pages
+- app/api/profile/route.ts — rewritten with variant support, PATCH method, fallback to direct YAML
+- app/api/profile/variants/route.ts + app/api/profile/variants/[name]/route.ts — variant CRUD proxy
+- lib/nav-items.ts — "Profil" item added with User icon
+- Profile LLM extraction: PROFILE_EXTRACTION_SYSTEM/PROFILE_EXTRACTION_USER prompts, extract_profile_from_text() in extraction.py, ExtractProfileView endpoint, llm/extract-profile URL route
+- Profile extraction UI: "Extraction LLM" panel in profile sidebar
+- Variant persistence: active variant stored in localStorage key profile_active_variant
+- LLMClient JSON robustness: _extract_json() static method using regex fallback
+- Portal LLM extraction: PORTAL_EXTRACTION_SYSTEM/PORTAL_EXTRACTION_USER prompts, extract_portal_from_text(), ExtractPortalView endpoint with persist-to-YAML + duplicate detection
+- Portal extraction UI: "Ajouter une entreprise" panel in /portals page with preview card + "Ajouter au scanner"
+- parseJsonFromShell rewritten: bottom-up JSON extraction from stdout
+- npm install at root for js-yaml dependency
+- Portals list page: /portals/list with portals-list-view.tsx — company cards, stat cards, search, filters
+- Portals two-column layout: portals-view.tsx with grid gap-5 xl:grid-cols-[380px_1fr]
+- Health check localStorage cache: portals_health_cache key, 1-hour TTL, loadCachedHealth() / saveCachedHealth()
+- career-ops update v1.19.0 → v1.20.0 applied
+- KPIs fixed: stat cards show "—" when no health data or health data has 0 companies; "Check portal health" button shown instead of "Re-check" when cache is empty
+- Verify route rewritten: bash -c "node script > tmpfile 2>&1" + fs.readFileSync bypasses Node.js pipe buffering entirely; timeout 118s
+- Mistral dedup: merged into single "Mistral AI" entry with careers_url: https://mistral.ai/careers + api: https://jobs.lever.co/mistral; removed duplicate "Mistral" entry
+- Per-field override indicators: computeOverriddenFields() + FIELD_LABELS mapping in profile-editor.tsx; chips show field names (e.g., ● Nom, ● Email) on CollapsiblePanel headers
+- Portals hero style: both /portals and /portals/list pages now use same hero pattern as discovery/skills (dot-bg, blur blob, instrumentSerif title, badge chip, action buttons)
+- Grid/list view toggle: /portals/list has toggle between 3-column grid and compact table list view
+- TypeScript clean throughout
+Active
+- (none)
+Blocked
+- (none)
+Blocked (resolved)
+- portals.yml doesn't exist — resolved by copying template
+- "Check portal health" returned 0 companies — resolved by adding env: process.env to execFile call; later fully fixed with file-redirect approach
+- POST /api/skills/llm/extract-portal with persist: true returned 500 — resolved by fixing portals.yml absolute path in both proxy route and Django view, plus parseJsonFromShell robustness fix
+- KPIs all showing 0 despite cached health data — root cause: execFile couldn't capture verify output (Node.js pipe buffering); resolved with bash -c "node script > tmpfile" approach
+- Django tests failing (test_discovery_api.py, etc.) — pre-existing DJANGO_SETTINGS_MODULE issue, unrelated to frontend changes
+Next Move
+1. (none)
+Relevant Files
+- web/src/components/profile-editor.tsx — full-width profile editor with sidebar, LLM extraction panel, per-field override chips, localStorage variant persistence
+- web/src/components/profile-list-view.tsx — profile/variant list page with grid cards, override chips, active variant from localStorage
+- web/src/app/profile/page.tsx — route for /profile
+- web/src/app/profile/list/page.tsx — route for /profile/list
+- web/src/app/api/profile/route.ts — profile CRUD with variant support + PATCH
+- web/src/app/api/profile/variants/route.ts — variant list/create
+- web/src/app/api/profile/variants/[name]/route.ts — variant delete
+- web/src/components/portals-view.tsx — two-column portals page with hero (dot-bg, blur blob, instrumentSerif title, badge chip), sidebar (extractor + actions), main (stats + company list + filters), localStorage health cache
+- web/src/components/portals-list-view.tsx — /portals/list page with hero, grid/list view toggle, company cards/table, 4 stat cards, search, status/enabled filters, localStorage health cache
+- web/src/app/portals/page.tsx — simplified to <PortalsView />
+- web/src/app/portals/list/page.tsx — simplified to <PortalsListView />
+- web/src/app/api/portals/route.ts — portals GET/POST (reads portals.yml via careerOpsRoot())
+- web/src/app/api/portals/verify/route.ts — rewritten: bash -c "node script > tmpfile" + fs.readFileSync to capture output despite Node.js pipe buffering; 118s timeout
+- web/src/components/skills/skills-portfolio-view.tsx — main skills page + "Générer CV" panel
+- web/src/app/api/skills/[...path]/route.ts — proxy with localFallback for export, integration, LLM extraction; parseJsonFromShell bottom-up JSON extraction
+- web/src/lib/career-ops.ts — careerOpsRoot() resolves to process.cwd()/..
+- web/src/lib/nav-items.ts — nav config (includes "Profil")
+- backend/apps/portals/views.py — PortalsView, ProfileView, ProfileVariantView, ExtractPortalView
+- config/urls.py — routes for /api/profile, /api/profile/variants, /api/profile/variants/<name>
+- backend/apps/skills_portfolio/services/exports.py — export_to_cvdata(variant), generate_cv_markdown(variant), _load_profile(variant), _deep_merge(), format_*_section()
+- backend/apps/skills_portfolio/services/integration.py — apply_discovery_to_portals(), extract_discovery_keywords()
+- backend/apps/skills_portfolio/services/llm_client.py — LLMClient.complete_json(), _extract_json() fallback
+- backend/apps/skills_portfolio/services/extraction.py — extract_from_experience(), extract_education_from_text(), extract_experiences_from_text(), extract_profile_from_text(), extract_portal_from_text(), _normalize_date()
+- backend/apps/skills_portfolio/services/prompts.py — all LLM prompts including PROFILE_EXTRACTION_*, PORTAL_EXTRACTION_*
+- backend/apps/skills_portfolio/models.py — all models
+- backend/apps/skills_portfolio/views.py — all DRF views including ExtractProfileView, ExtractPortalView
+- backend/apps/skills_portfolio/urls.py — all URL patterns including llm/extract-profile, llm/extract-portal
+- backend/apps/skills_portfolio/serializers.py — all serializers
+- packages/cv-generator/models.py — CVData Pydantic model
+- config/profile.yml — candidate profile (YAML source of truth)
+- config/profile.example.yml — example profile template
+- config/profiles/qualite-reglementaire.yml — Audrey's variant
+- templates/portals.example.yml — scanner config template
+- portals.yml — active scanner config (115 companies, merged Mistral entries)
+- verify-portals.mjs — ATS slug validator script; requires js-yaml (root node_modules)
+- archives/chats/2026-07-15_session_portals-kpi-hero-list-toggle.md — session archive for this session's work
+- archives/chats/2026-07-15_session_profile-llm-extraction-variant.md — session archive for profile LLM extraction
+▣  Compaction · Big Pickle · 50.0s

@@ -1,12 +1,12 @@
 # Frequently Asked Questions
 
-Common questions from the community, answered in one place. For setup details see [docs/SETUP.md](SETUP.md). For anything not covered here, ask in [Discord](https://discord.gg/8pRpHETxa4) or open a [GitHub Discussion](https://github.com/santifer/career-ops/discussions).
+Common questions from the community, answered in one place. For setup details see [docs/getting-started/setup.md](../getting-started/setup.md). For anything not covered here, ask in [Discord](https://discord.gg/8pRpHETxa4) or open a [GitHub Discussion](https://github.com/santifer/career-ops/discussions).
 
 ---
 
 ## 1. Skills aren't loading on Windows — symlink error on install
 
-Windows does not create symlinks by default, so Git checks out the CLI skill entrypoints (`.claude/skills/`, `.opencode/skills/`, etc.) as plain pointer files instead of real symlinks. The installer and updater both detect this automatically: run `node update-system.mjs apply` (or `npx @santifer/career-ops init` on a fresh install) and the `materializeSkillEntrypoints` step will replace the pointer files with the full canonical skill content. No manual `mklink` or Developer Mode changes are needed.
+Windows does not create symlinks by default, so Git checks out the CLI skill entrypoints (`.claude/skills/`, `.opencode/skills/`, etc.) as plain pointer files instead of real symlinks. The installer and updater both detect this automatically: run `node scripts/js/update-system.mjs apply` (or `npx @santifer/career-ops init` on a fresh install) and the `materializeSkillEntrypoints` step will replace the pointer files with the full canonical skill content. No manual `mklink` or Developer Mode changes are needed.
 
 ## 2. What is the difference between `scan` and `scan:full`?
 
@@ -18,7 +18,7 @@ Pass `--limit <N>` to `batch-runner.sh` to cap the number of offers processed in
 
 ## 4. Can I run career-ops on a cheaper or local model?
 
-Yes — career-ops is fully AI-agnostic and works with any AI coding CLI or standalone script. See [docs/RUNNING_ON_A_BUDGET.md](RUNNING_ON_A_BUDGET.md) for a full guide covering OpenCode, Qwen CLI, DeepSeek, OpenRouter, Ollama, and other local or low-cost providers, along with recommended model sizes and token-saving best practices.
+Yes — career-ops is fully AI-agnostic and works with any AI coding CLI or standalone script. See [docs/getting-started/budget.md](../getting-started/budget.md) for a full guide covering OpenCode, Qwen CLI, DeepSeek, OpenRouter, Ollama, and other local or low-cost providers, along with recommended model sizes and token-saving best practices.
 
 ## 5. What does the "possible cross-listing" warning mean during a scan?
 
@@ -38,7 +38,7 @@ it means the job description text of two listings from **different companies** i
 2. Choose ONE channel to apply through. Applying direct is usually safer; applying via an agency can be useful if the agency has a relationship with the hiring manager.
 3. If the two listings turn out to be genuinely different roles that happen to share boilerplate text (e.g. a generic engineering role template), the warning is a false positive — you can ignore it and apply to both.
 
-**Technical note:** the scanner computes a 64-bit SimHash fingerprint of each JD body and stores it in the 8th column of `data/scan-history.tsv` (`jd_fingerprint`). Fingerprints are computed locally from text already returned by the ATS API — no extra network request is made. Postings without a usable description never receive a fingerprint and are never flagged. See [docs/SCRIPTS.md](SCRIPTS.md#cross-listing-detection) for the full column reference.
+**Technical note:** the scanner computes a 64-bit SimHash fingerprint of each JD body and stores it in the 8th column of `data/scan-history.tsv` (`jd_fingerprint`). Fingerprints are computed locally from text already returned by the ATS API — no extra network request is made. Postings without a usable description never receive a fingerprint and are never flagged. See [docs/guides/scripts.md](scripts.md#cross-listing-detection) for the full column reference.
 
 ## 6. Can I use my own CV template?
 
@@ -50,4 +50,4 @@ Copy `templates/blacklist.example.md` to `data/blacklist.md`, then list one comp
 
 If a listed company is encountered, the scan reports that it was skipped (never silently). You can bypass the filter with `--include-blacklisted` if you want to audit matching postings.
 
-See the Company blacklist section in `docs/SCRIPTS.md` for the full behavior and supported workflow.
+See the Company blacklist section in `scripts.md` for the full behavior and supported workflow.

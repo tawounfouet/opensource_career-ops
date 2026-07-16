@@ -126,3 +126,15 @@ Pour changer de secteur :
 5. Tester en dry-run : `npm run scan -- --dry-run`
 
 Pour le biomedical specifiquement, la recommandation est de ne **pas** utiliser le scanner automatique, mais d'alimenter `pipeline.md` manuellement (voir `docs/guides/biomedical-diagnostic.md`).
+
+---
+
+## Automatiser le processus
+
+Voir le plan complet : **[docs/plans/portals-automation.md](../plans/portals-automation.md)**
+
+Quatre approches analysees :
+- **A — Django Management Command** (recommande) : `python manage.py discover_portals --sector pharma`
+- **B — OpenCode Skill** : instructions agent pour decouverte Playwright
+- **C — API REST** : endpoint `/api/portals/discover`
+- **D — Job Board Scraper** : scraping APEC/Indeed

@@ -129,3 +129,4 @@ backend/.pytest_cache/
 backend/*.egg-info/
 career-ops/
 scripts/python/career_ops_scripts.egg-info/
+backend/*.egg-info/

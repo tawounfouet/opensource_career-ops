@@ -11,7 +11,7 @@ emails, and returns them as leads. The engine writes them to the pipeline.
 
 ## Command
 
-- `node scripts/js/plugins.mjs run gmail` — ingest new leads from the configured label.
+- `node plugins.mjs run gmail` — ingest new leads from the configured label.
 
 ## Setup
 

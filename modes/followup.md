@@ -6,6 +6,11 @@
 
 Track follow-up cadence for active applications. Flag overdue follow-ups, extract contacts from notes, and generate tailored follow-up email/LinkedIn drafts using report context.
 
+**Not in scope here:** a same-day follow-up after a recruiter/interviewer
+confirmed a specific call time and then didn't call. That's not an
+elapsed-time cadence case — see `confirmed_time_noshow` in `modes/email.md`
+(`/career-ops email noshow`) instead.
+
 ## Inputs
 
 - `data/applications.md` — Application tracker
@@ -19,7 +24,7 @@ Track follow-up cadence for active applications. Flag overdue follow-ups, extrac
 Execute:
 
 ```bash
-node scripts/js/followup-cadence.mjs
+node followup-cadence.mjs
 ```
 
 Parse the JSON output. It contains:
@@ -177,7 +182,7 @@ the computed schedule until a follow-up is logged on or after the set-date;
 the latest pin per application wins; deleting the line clears the pin.
 
 Pins may be seeded AUTOMATICALLY when an application turns Applied —
-`node scripts/js/followup-seed.mjs <num>` (run by the `apply` mode's Step 9) appends a
+`node followup-seed.mjs <num>` (run by the `apply` mode's Step 9) appends a
 pin scheduling the first follow-up at apply date + the `applied_first`
 cadence. Seeding is idempotent, and a stale pin left behind by a later
 Rejected/Discarded transition is harmless because the cadence analysis
@@ -204,4 +209,4 @@ After showing all drafts, summarize:
 | Responded | 1 day (urgent reply) | Every 3 days | No limit |
 | Interview | 1 day after (thank-you) | Every 3 days | No limit |
 
-These defaults can be overridden via `node scripts/js/followup-cadence.mjs --applied-days N`.
+These defaults can be overridden via `node followup-cadence.mjs --applied-days N`.

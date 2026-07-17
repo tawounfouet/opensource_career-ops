@@ -1,6 +1,10 @@
-# Career-Ops
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/wordmark-dark.svg"><img src="docs/wordmark-light.svg" alt="career-ops" width="250" height="56"></picture></p>
 
-[English](README.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [简体中文](README.cn.md) | [繁體中文](README.zh-TW.md) | [Українська](README.ua.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Dansk](README.da.md) | [العربية](README.ar.md) | [हिन्दी](README.hi.md)
+<div align="center">
+
+[English](README.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [简体中文](README.cn.md) | [繁體中文](README.zh-TW.md) | [Українська](README.ua.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Dansk](README.da.md) | [العربية](README.ar.md) | [हिन्दी](README.hi.md)
+
+</div>
 
 <p align="center">
   <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="Système de recherche d'emploi multi-agent Career-Ops" width="800"></a>
@@ -131,7 +135,7 @@ claude   # ouvrez votre CLI d'IA — il vous guidera au premier lancement
 
 > **Le système est conçu pour être personnalisé par Claude lui-même.** Modes, archétypes, pondérations des scores, scripts de négociation — demandez simplement à Claude de les modifier. Il lit les mêmes fichiers qu'il utilise, il sait donc exactement quoi modifier.
 
-Voir [docs/getting-started/setup.md](docs/getting-started/setup.md) (en anglais) pour le guide de configuration complet.
+Voir [docs/SETUP.md](docs/SETUP.md) (en anglais) pour le guide de configuration complet.
 
 ## Intégration de l'interface en ligne de commande Gemini
 
@@ -172,8 +176,8 @@ cp .env.example .env
 npm install
 
 # 3. Évaluez une description de poste
-node scripts/js/gemini-eval.mjs "We are looking for a Senior AI Engineer..."
-node scripts/js/gemini-eval.mjs --file ./jds/my-job.txt
+node gemini-eval.mjs "We are looking for a Senior AI Engineer..."
+node gemini-eval.mjs --file ./jds/my-job.txt
 npm run gemini:eval -- "Texte de la description de poste ici"
 ```
 
@@ -237,10 +241,10 @@ Le scanner est livré avec **plus de 45 entreprises** prêtes à être analysée
 
 **Plateformes d'emploi scannées :** Ashby, Greenhouse, Lever, Wellfound, Workable, RemoteFront  
 
-Par défaut, `node scripts/js/scan.mjs` (alias `npm run scan`) fait confiance aux données renvoyées par les flux ATS. Certaines entreprises laissent des offres obsolètes actives sur leurs API publiques même après la fermeture du poste, ce qui peut polluer `pipeline.md`. Passez l'option `--verify` pour lancer Playwright après l'analyse de l'API afin de supprimer les offres expirées :
+Par défaut, `node scan.mjs` (alias `npm run scan`) fait confiance aux données renvoyées par les flux ATS. Certaines entreprises laissent des offres obsolètes actives sur leurs API publiques même après la fermeture du poste, ce qui peut polluer `pipeline.md`. Passez l'option `--verify` pour lancer Playwright après l'analyse de l'API afin de supprimer les offres expirées :
 
 ```bash
-node scripts/js/scan.mjs --verify          # découverte sans jeton + vérification de l'état actif via Playwright
+node scan.mjs --verify          # découverte sans jeton + vérification de l'état actif via Playwright
 ```
 
 La vérification est séquentielle et ne s'exécute que sur les nouvelles offres (après déduplication), afin de limiter l'utilisation des ressources.
@@ -304,9 +308,11 @@ career-ops/
 
 ## À propos de l'auteur
 
-Je m'appelle Santiago — Head of Applied AI, ancien fondateur (j'ai créé et vendu une entreprise qui fonctionne toujours sous mon nom). J'ai conçu career-ops pour gérer ma propre recherche d'emploi. Cela a fonctionné : je l'ai utilisé pour décrocher mon poste actuel.
+Je m'appelle [Santiago Fernández de Valderrama Aparicio](https://santifer.io/about) (santifer) — Head of Applied AI, ancien fondateur (j'ai créé et vendu une entreprise qui fonctionne toujours sous mon nom). J'ai conçu career-ops pour gérer ma propre recherche d'emploi. Cela a fonctionné : je l'ai utilisé pour décrocher mon poste actuel.
 
 Mon portfolio et mes autres projets open source → [santifer.io](https://santifer.io)
+
+Wikidata: [Santiago Fernández de Valderrama Aparicio](https://www.wikidata.org/wiki/Q138710224) · [career-ops](https://www.wikidata.org/wiki/Q139007988).
 
 ## Historique des étoiles
 
